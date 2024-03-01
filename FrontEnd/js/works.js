@@ -1,3 +1,19 @@
+//import { login } from "./login.js";
+//Récupération des pièces eventuellement stockées dans le localStorage
+//let works = window.localStorage.getItem('works');
+
+//if (pieces === null){
+    // Récupération des pièces depuis l'API
+    //const reponse = await fetch('http://localhost:5678/api/works');
+    //works = await reponse.json();
+    // Transformation des pièces en JSON
+    //const valeurWorks = JSON.stringify(works);
+    // Stockage des informations dans le localStorage
+    //window.localStorage.setItem("works", valeurWorks);
+//}else{
+   // works = JSON.parse(works);
+//}
+
 async function fetchDataAndGenerateWorks() {
     try {
         const response = await fetch("http://localhost:5678/api/works");

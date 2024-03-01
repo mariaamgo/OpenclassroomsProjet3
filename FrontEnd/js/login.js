@@ -1,4 +1,4 @@
-//function login(){
+// export function login(){
     const formLogin = document.querySelector("#login form")
     const email = "sophie.bluel@test.tld";
     const password = "S0phie";
@@ -21,5 +21,7 @@
             headers: {"Content-Type" : "application/json"},
             body: JSON.stringify(log)
         });
+
+        window.localStorage.setItem("token", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTY1MTg3NDkzOSwiZXhwIjoxNjUxOTYxMzM5fQ.JGN1p8YIfR-M-5eQ-Ypy6Ima5cKA4VbfL2xMr2MgHm4")
     });
 //}
