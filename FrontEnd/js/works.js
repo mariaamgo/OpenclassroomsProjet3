@@ -45,8 +45,16 @@ function genererWorks(works) {
         const liLogin = document.querySelector("#liLogin");
         liLogin.innerText = "logout";
 
-        const edition = document.querySelector(".edition");
-        edition.style = "display : flex";
+        const edition = document.querySelectorAll(".edition");
+        for(let i=0; i< edition.length; i++){
+            edition[i].style = "display : flex";
+        }
+
+        const filter = document.querySelector(".filter");
+        filter.style = "display : none";
+
+        const portfolioTitle = document.querySelector(".portfolio-title");
+        portfolioTitle.style = "margin-bottom: 100px";
     }
 }
 
