@@ -1,34 +1,23 @@
-//import { login } from "./login.js";
-//Récupération des pièces eventuellement stockées dans le localStorage
-//let works = window.localStorage.getItem('works');
-
-//if (pieces === null){
-    // Récupération des pièces depuis l'API
-    //const reponse = await fetch('http://localhost:5678/api/works');
-    //works = await reponse.json();
-    // Transformation des pièces en JSON
-    //const valeurWorks = JSON.stringify(works);
-    // Stockage des informations dans le localStorage
-    //window.localStorage.setItem("works", valeurWorks);
-//}else{
-   // works = JSON.parse(works);
-//}
+import { login } from "./login.js";
 
 async function fetchDataAndGenerateWorks() {
     try {
+
         const response = await fetch("http://localhost:5678/api/works");
         
         if (!response.ok) {
             throw new Error('Erreur lors de la récupération des données');
         }
-    
-        const works = await response.json();
-        console.log(works); // Affiche les données récupérées
         
+        let works = await response.json();
+        works = [...new Set(works)]
+
         genererWorks(works); // Appel de la fonction genererWorks avec les données récupérées
         
         // Ajout d'écouteurs d'événements avec les données
         addButtonEventListeners(works);
+        
+
     } catch (error) {
         console.error('Erreur :', error.message);
     }
@@ -41,9 +30,9 @@ function genererWorks(works) {
     for (let i = 0; i < works.length; i++) {
         const gallery = document.querySelector(".gallery");
         const worksElement = document.createElement("figure");
-
         const imageElement = document.createElement("img");
         imageElement.src = works[i].imageUrl;
+
 
         const titleElement = document.createElement("figcaption");
         titleElement.innerText = works[i].title;
@@ -52,7 +41,15 @@ function genererWorks(works) {
         worksElement.appendChild(imageElement);
         worksElement.appendChild(titleElement);
     }
+    if(localStorage.getItem("response") != ""){
+        const liLogin = document.querySelector("#liLogin");
+        liLogin.innerText = "logout";
+
+        const edition = document.querySelector(".edition");
+        edition.style = "display : flex";
+    }
 }
+
 
 function addButtonEventListeners(works) {
     const btnAll = document.querySelector(".btn-all");
@@ -63,7 +60,7 @@ function addButtonEventListeners(works) {
     function btnBackground(){
         const btnFilter = document.querySelectorAll(".filter button");
         for(let i=0; i< btnFilter.length; i++){
-            btnFilter[i].classList.remove = "actice"
+            btnFilter[i].classList.remove("active");
         }
     }
 
@@ -76,7 +73,7 @@ function addButtonEventListeners(works) {
 
     btnObjects.addEventListener("click", function () {
         btnBackground()
-        btnAll.classList = "active"
+        btnObjects.classList = "active"
         const worksFiltrees = works.filter(function (works) {
             return works.category.id === 1;
         });
@@ -86,7 +83,7 @@ function addButtonEventListeners(works) {
 
     btnAppartements.addEventListener("click", function () {
         btnBackground()
-        btnAll.classList = "active"
+        btnAppartements.classList = "active"
         const worksFiltrees = works.filter(function (works) {
             return works.category.id === 2;
         });
@@ -96,7 +93,7 @@ function addButtonEventListeners(works) {
 
     btnHotels.addEventListener("click", function () {
         btnBackground()
-        btnAll.classList = "active"
+        btnHotels.classList = "active"
         const worksFiltrees = works.filter(function (works) {
             return works.category.id === 3;
         });

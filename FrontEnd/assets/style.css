@@ -85,7 +85,7 @@ h1 > span {
 	font-family: 'Work Sans';
 	font-size:10px;
 	letter-spacing: 0.1em;
-;
+
 }
 
 h2{
@@ -266,7 +266,7 @@ footer nav ul {
 /* Login page*/
 
 #login {
-	width: 35%;
+	width: 50%;
 	margin: auto;
 }
 #login > * {
@@ -295,4 +295,15 @@ footer nav ul {
 	display: block;
 	width: 100%;
 	text-decoration: underline;
+}
+
+/* edition page*/
+.edition{
+	width: 120%;
+	height: 60px;
+	display: none;
+	justify-content: center;
+	align-items: center;
+	background-color: #000;
+	color: #FFF;
 }
