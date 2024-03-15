@@ -49,7 +49,7 @@
 				<h2>Mes Projets</h2>
 				<div class= "edition">
 					<i class="fa-regular fa-pen-to-square"></i>
-					<p>Mode édition</p>
+					<a href="#modal" class="js-modal">Mode édition</a>
 				</div>
 			</div>
 			<div class="filter">
@@ -58,8 +58,7 @@
 				<button class="btn-appartements">Appartements</button>
 				<button class="btn-hotels">Hôtels & restaurants</button>
 			</div>
-			<div class="gallery">
-			</div>
+			<div class="gallery"></div>
 		</section>
 		<section id="contact">
 			<h2>Contact</h2>
@@ -85,10 +84,12 @@
 	</footer>
 
 	<aside id="modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="title-modal" style="display: none;">
-		<div class="modal-wrapper">
-			<h1 id="title-modal">Galerie photo</h1>
-			<div></div>
-			<button>Ajouter une photo</button>
+		<div class="modal-wrapper modal-stop-propagation">
+			<div>
+				<i class="fa-solid fa-arrow-left"></i>
+				<i class="fa-solid fa-xmark close-modal"></i>
+			</div>
+			<div class="container-modal"></div>
 		</div>
 	</aside>
 </body>

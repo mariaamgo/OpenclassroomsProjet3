@@ -1,4 +1,5 @@
 import { login } from "./login.js";
+import { edition } from "./edition.js";
 
 async function fetchDataAndGenerateWorks() {
     try {
@@ -10,10 +11,11 @@ async function fetchDataAndGenerateWorks() {
         }
         
         let works = await response.json();
-        works = [...new Set(works)]
+        works = [...new Set(works)];
 
         genererWorks(works); // Appel de la fonction genererWorks avec les données récupérées
-        
+        edition(works);
+        deleteWorks();
         // Ajout d'écouteurs d'événements avec les données
         addButtonEventListeners(works);
         
@@ -41,23 +43,7 @@ function genererWorks(works) {
         worksElement.appendChild(imageElement);
         worksElement.appendChild(titleElement);
     }
-    if(localStorage.getItem("response") != ""){
-        const liLogin = document.querySelector("#liLogin");
-        liLogin.innerText = "logout";
-
-        const edition = document.querySelectorAll(".edition");
-        for(let i=0; i< edition.length; i++){
-            edition[i].style = "display : flex";
-        }
-
-        const filter = document.querySelector(".filter");
-        filter.style = "display : none";
-
-        const portfolioTitle = document.querySelector(".portfolio-title");
-        portfolioTitle.style = "margin-bottom: 100px";
-    }
 }
-
 
 function addButtonEventListeners(works) {
     const btnAll = document.querySelector(".btn-all");
@@ -73,14 +59,14 @@ function addButtonEventListeners(works) {
     }
 
     btnAll.addEventListener("click", function () {
-        btnBackground()
+        btnBackground();
         btnAll.classList = "active"
         document.querySelector(".gallery").innerHTML = "";
         genererWorks(works);
     });
 
     btnObjects.addEventListener("click", function () {
-        btnBackground()
+        btnBackground();
         btnObjects.classList = "active"
         const worksFiltrees = works.filter(function (works) {
             return works.category.id === 1;
@@ -90,7 +76,7 @@ function addButtonEventListeners(works) {
     });
 
     btnAppartements.addEventListener("click", function () {
-        btnBackground()
+        btnBackground();
         btnAppartements.classList = "active"
         const worksFiltrees = works.filter(function (works) {
             return works.category.id === 2;
@@ -100,12 +86,37 @@ function addButtonEventListeners(works) {
     });
 
     btnHotels.addEventListener("click", function () {
-        btnBackground()
+        btnBackground();
         btnHotels.classList = "active"
         const worksFiltrees = works.filter(function (works) {
             return works.category.id === 3;
         });
         document.querySelector(".gallery").innerHTML = "";
         genererWorks(worksFiltrees);
+    });
+}
+
+function deleteWorks() {
+    const logoDelete = document.querySelectorAll(".fa-trash-can");
+    logoDelete.forEach(element => {
+        element.addEventListener("click", function(event) {
+            const id = event.target.id;
+            const token = sessionStorage.getItem("response");
+            console.log(token);
+            fetch(`http://localhost:5678/api/works/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization : `Bearer ${token}`,
+                    accept: "*/*"
+                }
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+            });
+        
+        });
     });
 }

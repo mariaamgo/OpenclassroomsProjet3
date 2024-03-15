@@ -21,7 +21,7 @@ export function login(){
                     error.innerText = "Erreur dans l’identifiant ou le mot de passe";
                 }else{
                     const token = data.token;
-                    localStorage.setItem("response", token);
+                    sessionStorage.setItem("response", token);
                     //console.log(localStorage.getItem("response"));
                     window.location.href='../index.html';
                 }
