@@ -54,6 +54,7 @@ function modalGallery(works){
         worksElement.appendChild(trashIcon);
     }
     modalAddPhoto();
+    deleteWorks();
 }
 
 function modalAddPhoto(){
@@ -69,10 +70,13 @@ function modalAddPhoto(){
 			<div class="contained-modal">
                 <form action='login.html' method='post'>
                     <div class='file'>
-                        <i class='fa-regular fa-image'></i>
-                        <label for='file'>+ Ajouter une photo</label>
-                        <input type='file' name='file' id='file'>
-                        <p>jpg, png : 4mo max</p>
+                        <img class='img-file'>
+                        <div>
+                            <i class='fa-regular fa-image'></i>
+                            <label for='file' id='label-file'>+ Ajouter une photo</label>
+                            <input type='file' name='file' id='file'>
+                            <p>jpg, png : 4mo max</p>
+                        </div>
                     </div>
                     <label>Titre</label>
                     <input type='text' name='title' id='title'>
@@ -81,7 +85,32 @@ function modalAddPhoto(){
                 </form>
             </div>
 			<button class="button-modal">Valider</button>`;
-    })
+
+            //appel de la fonction previewFile()
+            document.querySelector("#file").addEventListener("change", previewFile);
+    });
+}
+
+//affichage de l'image sélectionnée dans file
+function previewFile() {
+        const divFile = document.querySelector(".file div");
+        const imgFile = document.querySelector(".img-file");
+        const file = document.querySelector("#file").files[0];
+        const reader = new FileReader();
+        reader.addEventListener(
+            "load",
+            () => {
+            // on convertit l'image en une chaîne de caractères base64
+            imgFile.src = reader.result;
+            },
+            false,
+        );
+
+        if (file) {
+            imgFile.style.display= "inline";
+            divFile.style.display= "none";
+            reader.readAsDataURL(file);
+        }
 }
 
 let modal = null;
@@ -101,8 +130,7 @@ function openModal(){
     })
 }
 
-function closeModal(){
-    
+function closeModal(){   
     if(modal === null) return;
     modal.style.display = "none";
     modal.setAttribute("aria-hidden", "true");
@@ -120,5 +148,31 @@ function stopPropagation(e){
 function backModal(works){
     document.querySelector(".fa-arrow-left").addEventListener("click", function(){
         modalGallery(works);
+    });
+}
+
+function deleteWorks() {
+    const logoDelete = document.querySelectorAll(".fa-trash-can");
+    logoDelete.forEach(element => {
+        element.addEventListener("click", function(event) {
+            const id = event.target.id;
+            const token = sessionStorage.getItem("response");
+            console.log(token);
+            fetch(`http://localhost:5678/api/works/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization : `Bearer ${token}`,
+                    accept: "*/*"
+                }
+            })
+            .then(response => {
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+            })
+
+        
+        });
     });
 }

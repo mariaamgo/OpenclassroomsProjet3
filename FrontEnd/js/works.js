@@ -10,12 +10,12 @@ async function fetchDataAndGenerateWorks() {
             throw new Error('Erreur lors de la récupération des données');
         }
         
-        let works = await response.json();
-        works = [...new Set(works)];
+        let works = await response.json(); //transformation du JSON en tableau
+        works = [...new Set(works)]; //transformation d'un ensemble (SET) + retransformation d'un ensemble en tableau pour le dédoublonner
 
-        genererWorks(works); // Appel de la fonction genererWorks avec les données récupérées
+        // Appel de la fonction genererWorks avec les données récupérées
+        genererWorks(works); 
         edition(works);
-        deleteWorks();
         // Ajout d'écouteurs d'événements avec les données
         addButtonEventListeners(works);
         
@@ -28,13 +28,13 @@ async function fetchDataAndGenerateWorks() {
 // Appel de la fonction fetchDataAndGenerateWorks
 fetchDataAndGenerateWorks();
 
+//fonction pour afficher tous les projets
 function genererWorks(works) {
     for (let i = 0; i < works.length; i++) {
         const gallery = document.querySelector(".gallery");
         const worksElement = document.createElement("figure");
         const imageElement = document.createElement("img");
         imageElement.src = works[i].imageUrl;
-
 
         const titleElement = document.createElement("figcaption");
         titleElement.innerText = works[i].title;
@@ -51,6 +51,7 @@ function addButtonEventListeners(works) {
     const btnAppartements = document.querySelector(".btn-appartements");
     const btnHotels = document.querySelector(".btn-hotels");
 
+    // Fonction pour réinitialiser l'apparence des boutons de filtre
     function btnBackground(){
         const btnFilter = document.querySelectorAll(".filter button");
         for(let i=0; i< btnFilter.length; i++){
@@ -93,30 +94,5 @@ function addButtonEventListeners(works) {
         });
         document.querySelector(".gallery").innerHTML = "";
         genererWorks(worksFiltrees);
-    });
-}
-
-function deleteWorks() {
-    const logoDelete = document.querySelectorAll(".fa-trash-can");
-    logoDelete.forEach(element => {
-        element.addEventListener("click", function(event) {
-            const id = event.target.id;
-            const token = sessionStorage.getItem("response");
-            console.log(token);
-            fetch(`http://localhost:5678/api/works/${id}`, {
-                method: "DELETE",
-                headers: {
-                    Authorization : `Bearer ${token}`,
-                    accept: "*/*"
-                }
-            })
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                console.log(data);
-            });
-        
-        });
     });
 }
