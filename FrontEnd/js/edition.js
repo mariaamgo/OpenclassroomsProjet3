@@ -43,6 +43,7 @@ function modalGallery(works){
     for (let i = 0; i < works.length; i++) {
         const containedModal = document.querySelector(".contained-modal");
         const worksElement = document.createElement("figure");
+
         const imageElement = document.createElement("img");
         const trashIcon = document.createElement("i");
 
@@ -67,7 +68,7 @@ function modalAddPhoto(works){
         let containerModal = document.querySelector(".container-modal");
         containerModal.innerHTML=`
             <h1 id="title-modal">Ajout photo</h1>
-			<div class="contained-modal">
+            <div class="contained-modal">
                 <form >
                     <div class='file'>
                         <img class='img-file'>
@@ -206,20 +207,25 @@ function deleteWorks() {
     logoDelete.forEach(element => {
         element.addEventListener("click", function(event) { 
             const id = event.target.id;
+            //appel de la balise figure dans la galerie principale
+            const figure = document.getElementById(`figure${id}`);
             const token = sessionStorage.getItem("response");
             console.log(token);
             fetch(`http://localhost:5678/api/works/${id}`, {
                 method: "DELETE",
                 headers: {
-                    Authorization : `Bearer ${token}`,
-                    accept: "*/*"
+                    "Authorization" : `Bearer ${token}`,
+                    "accept": "*/*"
                 }
             })
             .then(response => {
-                return response.json();
+                if(!response.ok){
+                    throw new Error("Erreur");
+                }
             })
             .then(data => {
-                element.parentElement.remove();          
+                element.parentElement.remove();
+                figure.remove();         
             })
         });
     });

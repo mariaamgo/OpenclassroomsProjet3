@@ -34,7 +34,10 @@ fetchDataAndGenerateWorks();
 function genererWorks(works) {
     for (let i = 0; i < works.length; i++) {
         const gallery = document.querySelector(".gallery");
+
         const worksElement = document.createElement("figure");
+        worksElement.id = `figure${works[i].id}`;
+
         const imageElement = document.createElement("img");
         imageElement.src = works[i].imageUrl;
 
