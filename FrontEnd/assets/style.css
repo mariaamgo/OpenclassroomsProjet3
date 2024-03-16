@@ -278,10 +278,9 @@ footer nav ul {
 }
 .modal-wrapper .contained-modal{
 	width: 100%;
-	padding: 25px 0;
 	border-bottom: 1px #B3B3B3 solid;
 }
-.modal-wrapper button{
+.modal-wrapper .button-modal{
 	font-family: 'Syne';
 	font-size: 1.2em;
 	font-weight: 700;
@@ -289,7 +288,7 @@ footer nav ul {
 	background-color: #1D6154;
 	width: 240px;
 	height: 50px;
-	margin: 25px 0;
+	margin: 25px auto;
 	text-align: center;
 	border: none;
 	border-radius: 60px ;
@@ -297,6 +296,7 @@ footer nav ul {
 }
 .contained-modal.gallery-modal{
 	width: 100%;
+	padding: 25px 0;
 	display: grid;
 	grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
 	grid-column-gap: 10px;

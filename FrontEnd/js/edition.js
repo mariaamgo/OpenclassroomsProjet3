@@ -53,11 +53,11 @@ function modalGallery(works){
         worksElement.appendChild(imageElement);
         worksElement.appendChild(trashIcon);
     }
-    modalAddPhoto();
+    modalAddPhoto(works);
     deleteWorks();
 }
 
-function modalAddPhoto(){
+function modalAddPhoto(works){
     const btnModal = document.querySelector(".button-modal");
     btnModal.addEventListener("click", function(){
         const arrowLeft = document.querySelector(".fa-arrow-left");
@@ -68,13 +68,13 @@ function modalAddPhoto(){
         containerModal.innerHTML=`
             <h1 id="title-modal">Ajout photo</h1>
 			<div class="contained-modal">
-                <form action='login.html' method='post'>
+                <form >
                     <div class='file'>
                         <img class='img-file'>
                         <div>
                             <i class='fa-regular fa-image'></i>
                             <label for='file' id='label-file'>+ Ajouter une photo</label>
-                            <input type='file' name='file' id='file'>
+                            <input type='file' name='file' id='file' accept='.png, .jpg, .jpeg'>
                             <p>jpg, png : 4mo max</p>
                         </div>
                     </div>
@@ -82,12 +82,62 @@ function modalAddPhoto(){
                     <input type='text' name='title' id='title'>
                     <label>Catégorie</label>
                     <select name='category' id='category'><option></option></select>
+                    <input type="submit" class="button-modal" value="Valider">
                 </form>
-            </div>
-			<button class="button-modal">Valider</button>`;
+            </div>`;
 
+            //ajout des options dans le select
+            const select = document.querySelector("#category");
+            //creation d'un set pour supprimer les doublons
+            const categories = new Set ();
+
+            //ajout des noms des catégories à l'ensemble sans doublons
+            works.forEach(work => categories.add(work.category.name));
+            //boucler pour obtenir les noms des catégories
+            categories.forEach(category =>{
+                const option = document.createElement("option");
+                option.innerText = category;
+                option.value= category;
+                select.appendChild(option);
+            })
+        
             //appel de la fonction previewFile()
             document.querySelector("#file").addEventListener("change", previewFile);
+            addWork();
+    });
+}
+
+export function addWork(){
+    const formModal = document.querySelector(".container-modal form");
+    formModal.addEventListener("submit", function(event){
+        event.preventDefault();
+        const newWork = {
+            file: event.target.querySelector("[name=file]").value,
+            title: event.target.querySelector("[name=title]").value,
+            category: event.target.querySelector("[name=category]").value
+        };
+        console.log(newWork)
+            // fetch("http://localhost:5678/api/users/login", {
+            //     method: "POST",
+            //     headers: {"Content-Type" : "application/json"},
+            //     body: JSON.stringify(log)
+            // })
+            // .then(response => {
+            //     return response.json();
+            // })
+            // .then(data => {
+            //     if(data.token === undefined){
+            //         const error = document.querySelector("#error");
+            //         error.innerText = "Erreur dans l’identifiant ou le mot de passe";
+            //     }else{
+            //         const token = data.token;
+            //         sessionStorage.setItem("response", token);
+            //         //console.log(localStorage.getItem("response"));
+            //         window.location.href='../index.html';
+            //     }
+            // })
+        
+
     });
 }
 
@@ -154,7 +204,7 @@ function backModal(works){
 function deleteWorks() {
     const logoDelete = document.querySelectorAll(".fa-trash-can");
     logoDelete.forEach(element => {
-        element.addEventListener("click", function(event) {
+        element.addEventListener("click", function(event) { 
             const id = event.target.id;
             const token = sessionStorage.getItem("response");
             console.log(token);
@@ -169,10 +219,8 @@ function deleteWorks() {
                 return response.json();
             })
             .then(data => {
-                console.log(data);
+                element.parentElement.remove();          
             })
-
-        
         });
     });
 }
