@@ -1,6 +1,5 @@
 import { login } from "./login.js";
 import { edition } from "./edition.js";
-//import { addWork } from "./addWorks.js";
 
 async function fetchDataAndGenerateWorks() {
     try {
@@ -19,7 +18,6 @@ async function fetchDataAndGenerateWorks() {
         // Ajout d'écouteurs d'événements avec les données
         addButtonEventListeners(works);
         edition(works);
-        addWork();
         
 
     } catch (error) {

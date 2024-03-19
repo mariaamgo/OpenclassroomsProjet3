@@ -69,7 +69,7 @@ function modalAddPhoto(works){
         containerModal.innerHTML=`
             <h1 id="title-modal">Ajout photo</h1>
             <div class="contained-modal">
-                <form >
+                <form action="../index.html" method="post">
                     <div class='file'>
                         <img class='img-file'>
                         <div>
@@ -87,57 +87,79 @@ function modalAddPhoto(works){
                 </form>
             </div>`;
 
-            //ajout des options dans le select
-            const select = document.querySelector("#category");
-            //creation d'un set pour supprimer les doublons
-            const categories = new Set ();
-
-            //ajout des noms des catégories à l'ensemble sans doublons
-            works.forEach(work => categories.add(work.category.name));
-            //boucler pour obtenir les noms des catégories
-            categories.forEach(category =>{
-                const option = document.createElement("option");
-                option.innerText = category;
-                option.value= category;
-                select.appendChild(option);
+            fetch("http://localhost:5678/api/categories", {
+            method: "GET",
+            headers: { "accept": "application/json" }
             })
-        
+            .then(response => {
+                if(!response.ok){
+                    throw new Error("Erreur lors de l'ajout de la photo");
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data)
+                for(let i = 0; i < data.length; i++){
+                    const select = document.querySelector("#category");
+                    const option = document.createElement("option");
+                    option.innerText = data[i].name;
+                    option.value = data[i].id;
+                    select.appendChild(option);
+                }
+            })   
+
             //appel de la fonction previewFile()
             document.querySelector("#file").addEventListener("change", previewFile);
+            changeBgColor();
+            previewFile();
             addWork();
     });
 }
 
-export function addWork(){
+function addWork(works){
     const formModal = document.querySelector(".container-modal form");
     formModal.addEventListener("submit", function(event){
         event.preventDefault();
-        const newWork = {
-            file: event.target.querySelector("[name=file]").value,
-            title: event.target.querySelector("[name=title]").value,
-            category: event.target.querySelector("[name=category]").value
-        };
-        console.log(newWork)
-            // fetch("http://localhost:5678/api/users/login", {
-            //     method: "POST",
-            //     headers: {"Content-Type" : "application/json"},
-            //     body: JSON.stringify(log)
-            // })
-            // .then(response => {
-            //     return response.json();
-            // })
-            // .then(data => {
-            //     if(data.token === undefined){
-            //         const error = document.querySelector("#error");
-            //         error.innerText = "Erreur dans l’identifiant ou le mot de passe";
-            //     }else{
-            //         const token = data.token;
-            //         sessionStorage.setItem("response", token);
-            //         //console.log(localStorage.getItem("response"));
-            //         window.location.href='../index.html';
-            //     }
-            // })
-        
+
+        const token = sessionStorage.getItem("response");
+
+        const file = event.target.querySelector("[name=file]");
+        const title = event.target.querySelector("[name=title]").value;
+        const category = event.target.querySelector("[name=category]").value;
+
+        if (!file.files[0] || !title || !category) {
+            alert("Tous les champs ne sont pas remplis");
+            return;
+        }
+
+        let formData = new FormData();
+
+        formData.append("image", file.files[0]);
+        formData.append("title", title);
+        formData.append("category", category);
+
+
+        fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            headers: { 
+                "Authorization" : `Bearer ${token}`,
+                "accept": "application/json"
+            },
+            body: formData
+        })
+        .then(response => {
+            if(!response.ok){
+                throw new Error("Erreur lors de l'ajout de la photo");
+            }
+            return response.json();
+        })
+        .then(data => {
+            alert("Ajout réussi :", data);
+        })
+        .catch(error => {
+            console.error("Une erreur s'est produite lors de l'ajout :", error);
+            // Gérer l'erreur
+        });     
 
     });
 }
@@ -162,6 +184,18 @@ function previewFile() {
             divFile.style.display= "none";
             reader.readAsDataURL(file);
         }
+}
+
+//fonction pour changer la couleur du background de l'input valider quand tout les champs sont remplie
+function changeBgColor(){
+    const file = document.querySelector("[name=file]");
+    const title = document.querySelector("[name=title]").value;
+    const category = document.querySelector("[name=category]").value;
+    const buttonModal = document.querySelector("input.button-modal");
+
+    if(file.files[0] || title || category){
+        buttonModal.style.backgroundColor = "#1D6154";
+    }
 }
 
 let modal = null;
