@@ -19,6 +19,7 @@ export function login(){
                 if(data.token === undefined){
                     alert("Erreur dans l’identifiant ou le mot de passe");
                 }else{
+                    //récupération du token et stockage du token
                     const token = data.token;
                     sessionStorage.setItem("response", token);
                     //console.log(localStorage.getItem("response"));

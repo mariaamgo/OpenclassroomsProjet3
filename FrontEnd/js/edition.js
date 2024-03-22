@@ -10,6 +10,7 @@ export function edition(works){
     }
 }
 
+//fonction pour changer l'apparence de index.html en mode edition
 function modeEdition(){
     const liLogin = document.querySelector("#liLogin");
     liLogin.innerText = "logout";
@@ -27,6 +28,7 @@ function modeEdition(){
         portfolioTitle.style = "margin-bottom: 100px";
 }
 
+//fonction pour créer le contenue de la fenêtre modale galerie
 function modalGallery(works){
     let containerModal = document.querySelector(".container-modal");
     containerModal.innerHTML = `
@@ -53,6 +55,7 @@ function modalGallery(works){
     deleteWorks();
 }
 
+//fonction pour créer le contenue de la fenêtre modale formulaire
 function modalAddPhoto(works){
     const btnModal = document.querySelector(".button-modal");
     btnModal.addEventListener("click", function(){
@@ -112,6 +115,7 @@ function modalAddPhoto(works){
     });
 }
 
+//fonction pour ajouter de nouveaux travaux à la galerie
 function addWork(works){
     const formModal = document.querySelector(".modal-content form");
     formModal.addEventListener("submit", function(event){
@@ -212,7 +216,7 @@ function changeBgColor(){
 }
 
 let modal = null;
-
+//fonction pour ouvrir la fenêtre modale
 function openModal(){
     document.querySelector(".js-modal").addEventListener("click", function(e){
         e.preventDefault();
@@ -222,6 +226,7 @@ function openModal(){
         target.setAttribute("aria-modal", "true");
         modal = target;
         console.log(modal);
+        //appel de la fonction closeModal pour fermer la fenêtre modale
         modal.addEventListener("click", closeModal);
         modal.querySelector(".close-modal").addEventListener("click", closeModal);
         modal.querySelector(".modal-stop-propagation").addEventListener("click", stopPropagation);
@@ -251,6 +256,7 @@ function backModal(works){
     });
 }
 
+//fonction pour supprimer les travaux
 function deleteWorks() {
     const logoDelete = document.querySelectorAll(".fa-trash-can");
     logoDelete.forEach(element => {
@@ -289,6 +295,7 @@ function emptyForm(){
     document.querySelector(".modal-content form").reset();
 }
 
+//fonction de deconnexion
 function logOut(){
     liLogin.addEventListener("click", function(){
         //retirer le token du sessionStorage

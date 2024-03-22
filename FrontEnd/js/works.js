@@ -15,8 +15,9 @@ async function fetchDataAndGenerateWorks() {
 
         // Appel de la fonction genererWorks avec les données récupérées
         genererWorks(works); 
-        // Ajout d'écouteurs d'événements avec les données
+        
         addButtonEventListeners(works);
+
         edition(works);
         
 
@@ -51,7 +52,7 @@ function genererWorks(works) {
 function addButtonEventListeners(works) {
     const btnAll = document.querySelector(".btn-all");
     const btnObjects = document.querySelector(".btn-objects");
-    const btnAppartements = document.querySelector(".btn-appartements");
+    const btnApartments = document.querySelector(".btn-appartements");
     const btnHotels = document.querySelector(".btn-hotels");
 
     // Fonction pour réinitialiser l'apparence des boutons de filtre
@@ -62,6 +63,7 @@ function addButtonEventListeners(works) {
         }
     }
 
+    //bouton pour tout afficher que les objets
     btnAll.addEventListener("click", function () {
         btnBackground();
         btnAll.classList = "active"
@@ -69,6 +71,7 @@ function addButtonEventListeners(works) {
         genererWorks(works);
     });
 
+    //filtre pour afficher que les objets
     btnObjects.addEventListener("click", function () {
         btnBackground();
         btnObjects.classList = "active"
@@ -79,9 +82,10 @@ function addButtonEventListeners(works) {
         genererWorks(worksFiltrees);
     });
 
-    btnAppartements.addEventListener("click", function () {
+    //filtre pour afficher que les appartements
+    btnApartments.addEventListener("click", function () {
         btnBackground();
-        btnAppartements.classList = "active"
+        btnApartments.classList = "active"
         const worksFiltrees = works.filter(function (works) {
             return works.category.id === 2;
         });
@@ -89,6 +93,7 @@ function addButtonEventListeners(works) {
         genererWorks(worksFiltrees);
     });
 
+    //filtre pour afficher que les hôtels et les restaurants
     btnHotels.addEventListener("click", function () {
         btnBackground();
         btnHotels.classList = "active"
