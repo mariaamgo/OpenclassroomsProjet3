@@ -2,10 +2,11 @@ export function edition(works){
     if(sessionStorage.getItem("response") != null){
         //appel de la fonction modeEdition
         modeEdition();
+        //deconnexion
         liLogin.addEventListener("click", function(){
             sessionStorage.removeItem("response");
             console.log(sessionStorage.getItem("response"));
-            window.location.href='../index.html';
+            window.location.href='../html/login.html';
         })
 
         modalGallery(works);
@@ -188,14 +189,19 @@ function previewFile() {
 
 //fonction pour changer la couleur du background de l'input valider quand tout les champs sont remplie
 function changeBgColor(){
-    const file = document.querySelector("[name=file]");
-    const title = document.querySelector("[name=title]").value;
-    const category = document.querySelector("[name=category]").value;
     const buttonModal = document.querySelector("input.button-modal");
 
-    if(file.files[0] || title || category){
-        buttonModal.style.backgroundColor = "#1D6154";
-    }
+    document.addEventListener("change", function(event){
+        const file = document.querySelector("[name=file]");
+        const title = document.querySelector("[name=title]").value;
+        const category = document.querySelector("[name=category]").value;
+
+        if(file.files[0] && title && category){
+            buttonModal.style.backgroundColor = "#1D6154";
+        } else {
+            buttonModal.style.backgroundColor = "#A7A7A7"; // Réinitialiser la couleur à sa valeur par défaut si les champs sont remplis
+        }
+    });
 }
 
 let modal = null;

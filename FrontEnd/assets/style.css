@@ -5,6 +5,7 @@
 html{
 	background-color: #FFFEF8;
 	position: relative;
+	scroll-behavior: smooth;
 }
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -33,10 +34,6 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
-	display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 100vh;
 }
 ol, ul {
 	list-style: none;
@@ -60,7 +57,11 @@ table {
 /** end reset css**/
 body {
 	max-width: 1140px;
+	min-height: 100vh;
 	margin:auto;
+	display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
 }
@@ -101,10 +102,14 @@ nav ul {
 	list-style-type: none;
 }
 nav li {
-	padding: 0 10px;
+	padding: 0 20px;
 	font-size: 1.2em;
+	cursor: pointer;
 }
-
+nav i {
+	padding-right: 0;
+	font-size: 1.5em;
+}
 li:hover {
 	color: #B1663C;
 }
@@ -123,7 +128,8 @@ li:hover {
 }
 
 #introduction article {
-	flex: 1
+	flex: 1;
+	padding-right: 100px;
 }
 #introduction h2 {
 	margin-bottom: 1em;
@@ -228,9 +234,10 @@ footer nav{
 	background-color: #FFF;
 }
 footer nav ul {
+	max-width: 1140px;
+	margin: 2em auto;
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em;
 }
 
 .modal{
