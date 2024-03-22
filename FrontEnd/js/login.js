@@ -17,8 +17,7 @@ export function login(){
             })
             .then(data => {
                 if(data.token === undefined){
-                    const error = document.querySelector("#error");
-                    error.innerText = "Erreur dans l’identifiant ou le mot de passe";
+                    alert("Erreur dans l’identifiant ou le mot de passe");
                 }else{
                     const token = data.token;
                     sessionStorage.setItem("response", token);

@@ -104,14 +104,18 @@ nav ul {
 nav li {
 	padding: 0 20px;
 	font-size: 1.2em;
-	cursor: pointer;
+}
+nav li.active{
+	font-weight: bold;
 }
 nav i {
 	padding-right: 0;
 	font-size: 1.5em;
 }
-li:hover {
-	color: #B1663C;
+header li:hover {
+	/* color: #B1663C; */
+	font-weight: bold;
+	cursor: pointer;
 }
 #introduction {
 	display: flex;
@@ -238,8 +242,10 @@ footer nav ul {
 	margin: 2em auto;
 	display: flex;
 	justify-content: flex-end;
+	cursor: default;
 }
 
+/* modal window */
 .modal{
 	position: fixed;
 	display: flex;
@@ -250,25 +256,21 @@ footer nav ul {
 	width: 100%;
 	height: 100%;
 	background: rgba(0, 0, 0, 0.8);
-	overflow: auto;
 }
 .modal-wrapper{
 	position: relative;
 	width: 630px;
-	padding: 0 70px;
+	max-height: 100vh;
 	box-sizing: border-box;
 	background-color: #FFF;
 	border-radius: 5px;
-}
-.modal-wrapper .container-modal{
-	display: flex;
-	flex-direction: column;
-	align-items: center;
+	overflow: auto;
 }
 .modal-wrapper .close-modal{
 	position: absolute;
 	right: 30px;
 	top: 25px;
+	font-size: 1.5em;
 	cursor: pointer;
 }
 .modal-wrapper .fa-arrow-left{
@@ -276,19 +278,22 @@ footer nav ul {
 	position: absolute;
 	left: 30px;
 	top: 25px;
+	font-size: 1.5em;
 	cursor: pointer;
 }
-.modal-wrapper h1{
+.container-modal{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 0 7em;
+}
+.container-modal h1{
 	font: inherit;
 	font-size: 2em;
 	color: #000;
 	margin-top: 50px;
 }
-.modal-wrapper .contained-modal{
-	width: 100%;
-	border-bottom: 1px #B3B3B3 solid;
-}
-.modal-wrapper .button-modal{
+.container-modal .button-modal{
 	font-family: 'Syne';
 	font-size: 1.2em;
 	font-weight: 700;
@@ -301,13 +306,11 @@ footer nav ul {
 	border-radius: 60px ;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
-.modal-wrapper button.button-modal{
-	background-color: #1D6154;
+.modal-content{
+	width: 100%;
+	border-bottom: 1px #B3B3B3 solid;
 }
-.modal-wrapper input.button-modal{
-	background-color: #A7A7A7;
-}
-.contained-modal.gallery-modal{
+.gallery-modal{
 	width: 100%;
 	padding: 25px 0;
 	display: grid;
@@ -315,16 +318,16 @@ footer nav ul {
 	grid-column-gap: 10px;
 	grid-row-gap: 25px;
 }
-.contained-modal figure {
+.gallery-modal figure {
 	position: relative;
 	width: 100%;
 }
-.contained-modal img {
+.gallery-modal img {
 	width: 100%;
-	height: 120px;
+	height: 110px;
     object-fit: cover;
 }
-.contained-modal .fa-trash-can{
+.gallery-modal .fa-trash-can{
 	position: absolute;
 	top: 5px;
 	right: 5px;
@@ -334,34 +337,24 @@ footer nav ul {
 	border-radius: 3px;
 	cursor: pointer;
 }
-.contained-modal form {
+button.button-modal{
+	background-color: #1D6154;
+	cursor: pointer;
+}
+
+.modal-content form {
 	text-align: left;
 	margin-top: 1.5rem;
 	display: flex;
 	flex-direction: column;
 }
-.contained-modal .file input{
-	display: none;
-}
-.contained-modal input,  .contained-modal select{
-	height: 50px;
-	padding: 0 25px;
-	font-size: 1.2em;
-	border: none;
-	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
-	box-sizing: border-box;
-}
-.contained-modal select{
-    appearance: none;
-    background-image: url('https://www.svgrepo.com/show/80156/down-arrow.svg');
-    background-repeat: no-repeat;
-    background-size: 10px 10px;
-    background-position: calc(100% - 25px);
-}
-.contained-modal label {
+.modal-content label {
 	margin: 2em 0 1em 0;
 }
-.contained-modal .file{
+.modal-content .file input{
+	display: none;
+}
+.modal-content .file{
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -369,22 +362,22 @@ footer nav ul {
 	background-color: #E8F1F6;
 	border-radius: 3px;
 }
-.contained-modal .file div{
+.modal-content .file div{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
-.contained-modal .file img{
+.modal-content .file img{
 	height: 100%;
 	width: auto;
 	margin: auto;
 	display: none;
 }
-.contained-modal .file .fa-image{
+.modal-content .file .fa-image{
 	font-size: 5em;
 	color: #B9C5CC;
 }
-.contained-modal .file label{
+.modal-content .file label{
 	font-size: 1.2em;
 	color: #306685;
 	background-color: #B9C5CC;
@@ -394,6 +387,25 @@ footer nav ul {
 	margin: 0.5rem;
 	text-align: center;
 	border-radius: 60px ;
+	cursor: pointer;
+}
+.modal-content input, .modal-content select{
+	height: 50px;
+	padding: 0 25px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+	box-sizing: border-box;
+}
+.modal-content select{
+    appearance: none;
+    background-image: url('https://www.svgrepo.com/show/80156/down-arrow.svg');
+    background-repeat: no-repeat;
+    background-size: 10px 10px;
+    background-position: calc(100% - 25px);
+}
+.modal-content input.button-modal{
+	background-color: #A7A7A7;
 }
 
 /* Login page*/

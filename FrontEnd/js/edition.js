@@ -2,16 +2,10 @@ export function edition(works){
     if(sessionStorage.getItem("response") != null){
         //appel de la fonction modeEdition
         modeEdition();
-        //deconnexion
-        liLogin.addEventListener("click", function(){
-            sessionStorage.removeItem("response");
-            console.log(sessionStorage.getItem("response"));
-            window.location.href='../html/login.html';
-        })
-
+        //appel de la fonction de deconnexion
+        logOut();
         modalGallery(works);
         openModal();
-        //deleteWorks();
         backModal(works);
     }
 }
@@ -37,12 +31,12 @@ function modalGallery(works){
     let containerModal = document.querySelector(".container-modal");
     containerModal.innerHTML = `
     <h1 id="title-modal">Galerie photo</h1>
-    <div class="contained-modal gallery-modal"></div>
+    <div class="modal-content gallery-modal"></div>
     <button class="button-modal">Ajouter une photo</button>`;
     const arrowLeft = document.querySelector(".fa-arrow-left");
     arrowLeft.style.display = "none";
     for (let i = 0; i < works.length; i++) {
-        const containedModal = document.querySelector(".contained-modal");
+        const modalContent = document.querySelector(".gallery-modal");
         const worksElement = document.createElement("figure");
 
         const imageElement = document.createElement("img");
@@ -51,7 +45,7 @@ function modalGallery(works){
         trashIcon.classList = "fa-solid fa-trash-can";
         trashIcon.id = works[i].id;
         imageElement.src = works[i].imageUrl;
-        containedModal.appendChild(worksElement);
+        modalContent.appendChild(worksElement);
         worksElement.appendChild(imageElement);
         worksElement.appendChild(trashIcon);
     }
@@ -69,7 +63,7 @@ function modalAddPhoto(works){
         let containerModal = document.querySelector(".container-modal");
         containerModal.innerHTML=`
             <h1 id="title-modal">Ajout photo</h1>
-            <div class="contained-modal">
+            <div class="modal-content">
                 <form action="../index.html" method="post">
                     <div class='file'>
                         <img class='img-file'>
@@ -88,6 +82,7 @@ function modalAddPhoto(works){
                 </form>
             </div>`;
 
+            //récupération des catégories dan l'API
             fetch("http://localhost:5678/api/categories", {
             method: "GET",
             headers: { "accept": "application/json" }
@@ -118,7 +113,7 @@ function modalAddPhoto(works){
 }
 
 function addWork(works){
-    const formModal = document.querySelector(".container-modal form");
+    const formModal = document.querySelector(".modal-content form");
     formModal.addEventListener("submit", function(event){
         event.preventDefault();
 
@@ -127,7 +122,7 @@ function addWork(works){
         const file = event.target.querySelector("[name=file]");
         const title = event.target.querySelector("[name=title]").value;
         const category = event.target.querySelector("[name=category]").value;
-
+        
         if (!file.files[0] || !title || !category) {
             alert("Tous les champs ne sont pas remplis");
             return;
@@ -155,7 +150,12 @@ function addWork(works){
             return response.json();
         })
         .then(data => {
-            alert("Ajout réussi :", data);
+            console.log(data)
+            alert("Ajout réussi de l'image réussi");
+            //vider le formulaire 
+            emptyForm();
+          
+
         })
         .catch(error => {
             console.error("Une erreur s'est produite lors de l'ajout :", error);
@@ -170,6 +170,14 @@ function previewFile() {
         const divFile = document.querySelector(".file div");
         const imgFile = document.querySelector(".img-file");
         const file = document.querySelector("#file").files[0];
+        
+        const maxSize = 4 * 1024 * 1024; //convertion de 4mo en octets
+        //vérifier que la taille de l'image ne dépasse pas
+        if (file && file.size > maxSize) {
+            alert("L'image fait plus de 4mo");
+            return;
+        }
+
         const reader = new FileReader();
         reader.addEventListener(
             "load",
@@ -187,19 +195,18 @@ function previewFile() {
         }
 }
 
-//fonction pour changer la couleur du background de l'input valider quand tout les champs sont remplie
+//fonction pour changer la couleur du background de l'input valider quand tous les champs sont remplis
 function changeBgColor(){
     const buttonModal = document.querySelector("input.button-modal");
-
     document.addEventListener("change", function(event){
         const file = document.querySelector("[name=file]");
         const title = document.querySelector("[name=title]").value;
         const category = document.querySelector("[name=category]").value;
 
         if(file.files[0] && title && category){
-            buttonModal.style.backgroundColor = "#1D6154";
+            buttonModal.style = "background-color : #1D6154; cursor : pointer";
         } else {
-            buttonModal.style.backgroundColor = "#A7A7A7"; // Réinitialiser la couleur à sa valeur par défaut si les champs sont remplis
+            buttonModal.style = "background-color : #A7A7A7; cursor : default"; // Réinitialiser la couleur à sa valeur par défaut si les champs sont remplis
         }
     });
 }
@@ -230,6 +237,8 @@ function closeModal(){
     modal.querySelector(".close-modal").removeEventListener("click", closeModal);
     modal.querySelector(".modal-stop-propagation").removeEventListener("click", stopPropagation);
     modal = null;
+    //vider le formulaire 
+    emptyForm();
 }
 
 function stopPropagation(e){
@@ -269,4 +278,23 @@ function deleteWorks() {
             })
         });
     });
+}
+
+//fonction pour vider le formulaire 
+function emptyForm(){
+    const imgFile = document.querySelector(".img-file");
+    imgFile.src = "";
+    imgFile.style.display = "none";
+    document.querySelector(".file div").style.display= "flex";
+    document.querySelector(".modal-content form").reset();
+}
+
+function logOut(){
+    liLogin.addEventListener("click", function(){
+        //retirer le token du sessionStorage
+        sessionStorage.removeItem("response");
+        console.log(sessionStorage.getItem("response"));
+        //redirection vers la page de connexion
+        window.location.href='../html/login.html';
+    })
 }
