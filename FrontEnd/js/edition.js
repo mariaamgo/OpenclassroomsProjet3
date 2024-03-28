@@ -1,3 +1,6 @@
+import { addFigure } from "./works.js";
+import { getCategories } from "./categories.js";
+
 export function edition(works){
     if(sessionStorage.getItem("response") != null){
         //appel de la fonction modeEdition
@@ -85,34 +88,28 @@ function modalAddPhoto(works){
                 </form>
             </div>`;
 
-            //récupération des catégories dan l'API
-            fetch("http://localhost:5678/api/categories", {
-            method: "GET",
-            headers: { "accept": "application/json" }
-            })
-            .then(response => {
-                if(!response.ok){
-                    throw new Error("Erreur lors de l'ajout de la photo");
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log(data)
-                for(let i = 0; i < data.length; i++){
-                    const select = document.querySelector("#category");
-                    const option = document.createElement("option");
-                    option.innerText = data[i].name;
-                    option.value = data[i].id;
-                    select.appendChild(option);
-                }
-            })   
-
+            fillOptions();
             //appel de la fonction previewFile()
             document.querySelector("#file").addEventListener("change", previewFile);
             changeBgColor();
             previewFile();
-            addWork();
+            addWork(works);
     });
+}
+
+//fonction pour remplir les options du select du formulaire
+async function fillOptions(){
+    //appel des catégories de la fonction getCategories()
+    const categories = await getCategories();
+    console.log(categories)
+    //boucle sur les catégories
+    for(let i = 0; i < categories.length; i++){
+        const select = document.querySelector("#category");
+        const option = document.createElement("option");
+        option.innerText = categories[i].name;
+        option.value = categories[i].id;
+        select.appendChild(option);
+    }
 }
 
 //fonction pour ajouter de nouveaux travaux à la galerie
@@ -138,7 +135,6 @@ function addWork(works){
         formData.append("title", title);
         formData.append("category", category);
 
-
         fetch("http://localhost:5678/api/works", {
             method: "POST",
             headers: { 
@@ -154,12 +150,14 @@ function addWork(works){
             return response.json();
         })
         .then(data => {
-            console.log(data)
-            alert("Ajout réussi de l'image réussi");
+            works.push(data);
+            let indexLastElement = works.length - 1;
+            
+            addFigure(works, indexLastElement);
             //vider le formulaire 
             emptyForm();
-          
-
+            
+            alert("Ajout de l'image réussi");
         })
         .catch(error => {
             console.error("Une erreur s'est produite lors de l'ajout :", error);
@@ -225,7 +223,7 @@ function openModal(){
         target.removeAttribute('aria-hidden');
         target.setAttribute("aria-modal", "true");
         modal = target;
-        console.log(modal);
+        
         //appel de la fonction closeModal pour fermer la fenêtre modale
         modal.addEventListener("click", closeModal);
         modal.querySelector(".close-modal").addEventListener("click", closeModal);
@@ -265,7 +263,7 @@ function deleteWorks() {
             //appel de la balise figure dans la galerie principale
             const figure = document.getElementById(`figure${id}`);
             const token = sessionStorage.getItem("response");
-            console.log(token);
+            
             fetch(`http://localhost:5678/api/works/${id}`, {
                 method: "DELETE",
                 headers: {
@@ -277,11 +275,17 @@ function deleteWorks() {
                 if(!response.ok){
                     throw new Error("Erreur");
                 }
+                return response;
             })
             .then(data => {
                 element.parentElement.remove();
-                figure.remove();         
+                figure.remove();
+                alert("La suppression a été réalisée avec succès");  
             })
+            .catch(error => {
+                console.error("Erreur lors de la suppression :", error);
+                alert("Une erreur s'est produite lors de la suppression.");
+            });
         });
     });
 }
@@ -289,7 +293,9 @@ function deleteWorks() {
 //fonction pour vider le formulaire 
 function emptyForm(){
     const imgFile = document.querySelector(".img-file");
-    imgFile.src = "";
+    if(imgFile.src){
+        imgFile.src = "";
+    }
     imgFile.style.display = "none";
     document.querySelector(".file div").style.display= "flex";
     document.querySelector(".modal-content form").reset();

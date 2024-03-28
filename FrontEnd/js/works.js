@@ -1,5 +1,6 @@
 import { login } from "./login.js";
 import { edition } from "./edition.js";
+import { getCategories } from "./categories.js";
 
 async function fetchDataAndGenerateWorks() {
     try {
@@ -13,14 +14,16 @@ async function fetchDataAndGenerateWorks() {
         let works = await response.json(); //transformation du JSON en tableau
         works = [...new Set(works)]; //transformation d'un ensemble (SET) + retransformation d'un ensemble en tableau pour le dédoublonner
 
+        // Récupération des catégories à partir de la fonction getCategories
+        const categories = await getCategories();
+
         // Appel de la fonction genererWorks avec les données récupérées
         genererWorks(works); 
         
-        addButtonEventListeners(works);
+        addButtonEventListeners(works, categories);
 
         edition(works);
         
-
     } catch (error) {
         console.error('Erreur :', error.message);
     }
@@ -32,38 +35,39 @@ fetchDataAndGenerateWorks();
 //fonction pour afficher tous les projets
 function genererWorks(works) {
     for (let i = 0; i < works.length; i++) {
-        const gallery = document.querySelector(".gallery");
-
-        const worksElement = document.createElement("figure");
-        worksElement.id = `figure${works[i].id}`;
-
-        const imageElement = document.createElement("img");
-        imageElement.src = works[i].imageUrl;
-
-        const titleElement = document.createElement("figcaption");
-        titleElement.innerText = works[i].title;
-    
-        gallery.appendChild(worksElement);
-        worksElement.appendChild(imageElement);
-        worksElement.appendChild(titleElement);
+        addFigure(works, i);
     }
 }
 
-function addButtonEventListeners(works) {
-    const btnAll = document.querySelector(".btn-all");
-    const btnObjects = document.querySelector(".btn-objects");
-    const btnApartments = document.querySelector(".btn-appartements");
-    const btnHotels = document.querySelector(".btn-hotels");
+export function addFigure(works, index){
+    const gallery = document.querySelector(".gallery");
 
-    // Fonction pour réinitialiser l'apparence des boutons de filtre
-    function btnBackground(){
-        const btnFilter = document.querySelectorAll(".filter button");
-        for(let i=0; i< btnFilter.length; i++){
-            btnFilter[i].classList.remove("active");
-        }
+    const worksElement = document.createElement("figure");
+    worksElement.id = `figure${works[index].id}`;
+
+    const imageElement = document.createElement("img");
+    imageElement.src = works[index].imageUrl;
+
+    const titleElement = document.createElement("figcaption");
+    titleElement.innerText = works[index].title;
+
+    gallery.appendChild(worksElement);
+    worksElement.appendChild(imageElement);
+    worksElement.appendChild(titleElement);
+}
+
+// Fonction pour réinitialiser l'apparence des boutons de filtre
+function btnBackground(){
+    const btnFilter = document.querySelectorAll(".filter button");
+    for(let i=0; i< btnFilter.length; i++){
+        btnFilter[i].classList.remove("active");
     }
+}
 
-    //bouton pour tout afficher que les objets
+function addButtonEventListeners(works, categories) {
+    const btnAll = document.querySelector(".btn-all");
+
+    //bouton pour afficher tous les projets
     btnAll.addEventListener("click", function () {
         btnBackground();
         btnAll.classList = "active"
@@ -71,36 +75,24 @@ function addButtonEventListeners(works) {
         genererWorks(works);
     });
 
-    //filtre pour afficher que les objets
-    btnObjects.addEventListener("click", function () {
-        btnBackground();
-        btnObjects.classList = "active"
-        const worksFiltrees = works.filter(function (works) {
-            return works.category.id === 1;
+    //récupération des catégories et création de boutton à l'aide d'une boucle
+    for(let i = 0; i < categories.length; i++){
+        const filter = document.querySelector(".filter");
+        const button = document.createElement("button");
+        button.innerText = categories[i].name;
+        button.classList = `button-${categories[i].id}`;
+        filter.appendChild(button); 
+        
+        //filtre des projets en fonction de la catégorie cliquée
+        button.addEventListener("click", function () {
+            btnBackground();
+            button.classList = "active"
+            const worksFiltrees = works.filter(function (works) {
+                //vérifier si la catégorie de l'oeuvre correspond à l'id de la catégorie du bouton
+                return works.category.id === categories[i].id;
+            });
+            document.querySelector(".gallery").innerHTML = "";
+            genererWorks(worksFiltrees);
         });
-        document.querySelector(".gallery").innerHTML = "";
-        genererWorks(worksFiltrees);
-    });
-
-    //filtre pour afficher que les appartements
-    btnApartments.addEventListener("click", function () {
-        btnBackground();
-        btnApartments.classList = "active"
-        const worksFiltrees = works.filter(function (works) {
-            return works.category.id === 2;
-        });
-        document.querySelector(".gallery").innerHTML = "";
-        genererWorks(worksFiltrees);
-    });
-
-    //filtre pour afficher que les hôtels et les restaurants
-    btnHotels.addEventListener("click", function () {
-        btnBackground();
-        btnHotels.classList = "active"
-        const worksFiltrees = works.filter(function (works) {
-            return works.category.id === 3;
-        });
-        document.querySelector(".gallery").innerHTML = "";
-        genererWorks(worksFiltrees);
-    });
+    }
 }

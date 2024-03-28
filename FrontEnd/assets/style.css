@@ -120,27 +120,27 @@ header li:hover {
 #introduction {
 	display: flex;
 	align-items: center;
-	margin-bottom: 150px;
+	margin-bottom: 9.4em;
 }
 #introduction figure {
-	flex: 1
+	flex: 1;
 }
 #introduction img {
 	display: block;
-	margin: auto;
 	width: 80%;
+	margin: auto;
 }
 
 #introduction article {
 	flex: 1;
-	padding-right: 100px;
 }
 #introduction h2 {
 	margin-bottom: 1em;
 }
 
 #introduction p {
-	margin-bottom: 0.5em;
+	margin-bottom: 1em;
+	width: 80%;
 }
 
 .portfolio-title{
@@ -465,7 +465,8 @@ button.button-modal{
 }
 .portfolio-title .edition{
 	position: absolute;
-	right: 29%;
+	right: 31%;
 	display: none;
 	justify-content: flex-start;
+	align-items: baseline;
 }
