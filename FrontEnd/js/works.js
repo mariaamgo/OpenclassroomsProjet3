@@ -1,4 +1,4 @@
-import { login } from "./login.js";
+//import { login } from "./login.js";
 import { edition } from "./edition.js";
 import { getCategories } from "./categories.js";
 
@@ -17,8 +17,8 @@ async function fetchDataAndGenerateWorks() {
         // Récupération des catégories à partir de la fonction getCategories
         const categories = await getCategories();
 
-        // Appel de la fonction genererWorks avec les données récupérées
-        genererWorks(works); 
+        // Appel de la fonction generateWorks avec les données récupérées
+        generateWorks(works); 
         
         addButtonEventListeners(works, categories);
 
@@ -33,7 +33,7 @@ async function fetchDataAndGenerateWorks() {
 fetchDataAndGenerateWorks();
 
 //fonction pour afficher tous les projets
-function genererWorks(works) {
+function generateWorks(works) {
     for (let i = 0; i < works.length; i++) {
         addFigure(works, i);
     }
@@ -72,7 +72,7 @@ function addButtonEventListeners(works, categories) {
         btnBackground();
         btnAll.classList = "active"
         document.querySelector(".gallery").innerHTML = "";
-        genererWorks(works);
+        generateWorks(works);
     });
 
     //récupération des catégories et création de boutton à l'aide d'une boucle
@@ -85,14 +85,16 @@ function addButtonEventListeners(works, categories) {
         
         //filtre des projets en fonction de la catégorie cliquée
         button.addEventListener("click", function () {
+            //réinitialisation de l'apparence des boutons de filtre
             btnBackground();
+            //ajout de la class active pour changer l'apparence du bouton cliqué
             button.classList = "active"
             const worksFiltrees = works.filter(function (works) {
                 //vérifier si la catégorie de l'oeuvre correspond à l'id de la catégorie du bouton
                 return works.category.id === categories[i].id;
             });
             document.querySelector(".gallery").innerHTML = "";
-            genererWorks(worksFiltrees);
+            generateWorks(worksFiltrees);
         });
     }
 }

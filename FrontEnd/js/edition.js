@@ -7,6 +7,7 @@ export function edition(works){
         modeEdition();
         //appel de la fonction de deconnexion
         logOut();
+        //appel de la fonction de modal
         modalGallery(works);
         openModal();
         backModal(works);
@@ -54,8 +55,10 @@ function modalGallery(works){
         worksElement.appendChild(imageElement);
         worksElement.appendChild(trashIcon);
     }
+    //appel de la fonction modalAddPhoto pour ouvrir "Ajout photo"
     modalAddPhoto(works);
-    deleteWorks();
+    //appel de la fonction deleteWorks pour supprimer les projets cliquée
+    deleteWorks(works);
 }
 
 //fonction pour créer le contenue de la fenêtre modale formulaire
@@ -89,10 +92,10 @@ function modalAddPhoto(works){
             </div>`;
 
             fillOptions();
-            //appel de la fonction previewFile()
+            //appel de la fonction previewFile() pour avoir l'aperçu de la photo choisie
             document.querySelector("#file").addEventListener("change", previewFile);
+            //appel de la fonction changeBgColor 
             changeBgColor();
-            previewFile();
             addWork(works);
     });
 }
@@ -112,29 +115,79 @@ async function fillOptions(){
     }
 }
 
+//affichage de l'image sélectionnée dans file
+function previewFile() {
+    const divFile = document.querySelector(".file div");
+    const imgFile = document.querySelector(".img-file");
+    const file = document.querySelector("#file").files[0];
+    
+    const maxSize = 4 * 1024 * 1024; //convertion de 4mo en octets
+    //vérifier que la taille de l'image ne dépasse pas 4mo
+    if (file && file.size > maxSize) {
+        alert("L'image fait plus de 4mo");
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.addEventListener(
+        "load",
+        () => {
+        // on convertit l'image en une chaîne de caractères
+        imgFile.src = reader.result;
+        },
+        false,
+    );
+    //si file = true alors on fait apparaitre l'image, et disparaitre la balise div
+    if (file) {
+        imgFile.style.display= "inline";
+        divFile.style.display= "none";
+        reader.readAsDataURL(file);
+    }
+}
+
+//fonction pour changer la couleur du background de l'input valider quand tous les champs sont remplis
+function changeBgColor(){
+    const buttonModal = document.querySelector("input.button-modal");
+    document.addEventListener("change", function(event){
+        const file = document.querySelector("[name=file]");
+        const title = document.querySelector("[name=title]").value;
+        const category = document.querySelector("[name=category]").value;
+
+        //si tous les champs sont remplis changement de la couleur du bg-color de l'input submit
+        if(file.files[0] && title && category){
+            buttonModal.style = "background-color : #1D6154; cursor : pointer";
+        } else {
+            //réinitialiser la couleur à sa valeur par défaut si les champs ne sont pas remplis
+            buttonModal.style = "background-color : #A7A7A7; cursor : default";
+        }
+    });
+}
+
 //fonction pour ajouter de nouveaux travaux à la galerie
 function addWork(works){
     const formModal = document.querySelector(".modal-content form");
     formModal.addEventListener("submit", function(event){
         event.preventDefault();
-
+        //récupération du token
         const token = sessionStorage.getItem("response");
-
+        //récupération de la valeur des input
         const file = event.target.querySelector("[name=file]");
         const title = event.target.querySelector("[name=title]").value;
         const category = event.target.querySelector("[name=category]").value;
-        
+        //alert si les champs ne sont pas remplis
         if (!file.files[0] || !title || !category) {
             alert("Tous les champs ne sont pas remplis");
             return;
         }
 
+        //création d'un formData pour construire un ensemble de paires clé/valeur
         let formData = new FormData();
 
         formData.append("image", file.files[0]);
         formData.append("title", title);
         formData.append("category", category);
 
+        //stockage des valeurs dans l'api swagger
         fetch("http://localhost:5678/api/works", {
             method: "POST",
             headers: { 
@@ -150,10 +203,14 @@ function addWork(works){
             return response.json();
         })
         .then(data => {
+            //ajout des données de data à la fin du tableau works
             works.push(data);
+            //récupération du dernier index
             let indexLastElement = works.length - 1;
             
+            //appel de la fonction add figure pour ajouter la nouvelle image dans la galerie
             addFigure(works, indexLastElement);
+            
             //vider le formulaire 
             emptyForm();
             
@@ -164,52 +221,6 @@ function addWork(works){
             // Gérer l'erreur
         });     
 
-    });
-}
-
-//affichage de l'image sélectionnée dans file
-function previewFile() {
-        const divFile = document.querySelector(".file div");
-        const imgFile = document.querySelector(".img-file");
-        const file = document.querySelector("#file").files[0];
-        
-        const maxSize = 4 * 1024 * 1024; //convertion de 4mo en octets
-        //vérifier que la taille de l'image ne dépasse pas
-        if (file && file.size > maxSize) {
-            alert("L'image fait plus de 4mo");
-            return;
-        }
-
-        const reader = new FileReader();
-        reader.addEventListener(
-            "load",
-            () => {
-            // on convertit l'image en une chaîne de caractères base64
-            imgFile.src = reader.result;
-            },
-            false,
-        );
-
-        if (file) {
-            imgFile.style.display= "inline";
-            divFile.style.display= "none";
-            reader.readAsDataURL(file);
-        }
-}
-
-//fonction pour changer la couleur du background de l'input valider quand tous les champs sont remplis
-function changeBgColor(){
-    const buttonModal = document.querySelector("input.button-modal");
-    document.addEventListener("change", function(event){
-        const file = document.querySelector("[name=file]");
-        const title = document.querySelector("[name=title]").value;
-        const category = document.querySelector("[name=category]").value;
-
-        if(file.files[0] && title && category){
-            buttonModal.style = "background-color : #1D6154; cursor : pointer";
-        } else {
-            buttonModal.style = "background-color : #A7A7A7; cursor : default"; // Réinitialiser la couleur à sa valeur par défaut si les champs sont remplis
-        }
     });
 }
 
@@ -255,7 +266,7 @@ function backModal(works){
 }
 
 //fonction pour supprimer les travaux
-function deleteWorks() {
+function deleteWorks(works) {
     const logoDelete = document.querySelectorAll(".fa-trash-can");
     logoDelete.forEach(element => {
         element.addEventListener("click", function(event) { 
@@ -278,8 +289,11 @@ function deleteWorks() {
                 return response;
             })
             .then(data => {
+                //suppression de l'élément parent de l'icône de suppression 
                 element.parentElement.remove();
+                //suppression de l'élément figure 
                 figure.remove();
+            
                 alert("La suppression a été réalisée avec succès");  
             })
             .catch(error => {
