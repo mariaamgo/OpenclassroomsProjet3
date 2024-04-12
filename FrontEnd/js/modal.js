@@ -81,14 +81,27 @@ function modalGallery(works){
 //fonction pour créer le contenue de la fenêtre modale formulaire
 function modalAddPhoto(works){
     const btnModal = document.querySelector(".button-modal");
-    btnModal.addEventListener("click", () => containedModalAddPhoto(works, btnModal));
+    btnModal.addEventListener("click", () => styleModalAddPhoto(works, btnModal));
 }
 
-function containedModalAddPhoto(works, btnModal){
+function styleModalAddPhoto(works, btnModal){
     const arrowLeft = document.querySelector(".fa-arrow-left");
     arrowLeft.style.display = "block";
     // Ajouter le contenu à la modal pour ajouter une photo
     btnModal.style = "background-color : #A7A7A7";
+    //ajout du contenu de la fenêtre modale
+    containerModalAddPhoto()
+    //appel de la fonction fillOptions pour avoir les options du select
+    fillOptions();
+    //appel de la fonction previewFile() pour avoir l'aperçu de la photo choisie
+    document.querySelector("#file").addEventListener("change", previewFile);
+    //appel de la fonction changeBgColor 
+    changeBgColor();
+    //appel de la fonction addWork pour ajouter une nouvelle image (nouveau projet)
+    addWork(works);
+}
+
+function containerModalAddPhoto(){
     let containerModal = document.querySelector(".container-modal");
     containerModal.innerHTML=`
         <h1 id="title-modal">Ajout photo</h1>
@@ -110,15 +123,6 @@ function containedModalAddPhoto(works, btnModal){
                 <input type="submit" class="button-modal" value="Valider">
             </form>
         </div>`;
-
-    //appel de la fonction fillOptions pour avoir les options du select
-    fillOptions();
-    //appel de la fonction previewFile() pour avoir l'aperçu de la photo choisie
-    document.querySelector("#file").addEventListener("change", previewFile);
-    //appel de la fonction changeBgColor 
-    changeBgColor();
-    //appel de la fonction addWork pour ajouter une nouvelle image (nouveau projet)
-    addWork(works);
 }
 
 //fonction pour remplir les options du select du formulaire
