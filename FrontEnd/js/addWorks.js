@@ -1,5 +1,6 @@
 import { addFigure } from "./works.js";
 import { emptyForm } from "./modal.js";
+import { fetchResponseError, catchError } from "./error.js";
 
 //fonction pour ajouter de nouveaux travaux à la galerie
 export function addWork(works){
@@ -38,12 +39,7 @@ function fetchPostWorks(event, works){
         },
         body: formData
     })
-    .then(response => {
-        if(!response.ok){
-            throw new Error("Erreur lors de l'ajout de la photo");
-        }
-        return response.json();
-    })
+    .then(response => (fetchResponseError(response, "Ajout impossible"), response.json()))
     .then(data => {
         //ajout des données de data à la fin du tableau works
         works.push(data);
@@ -58,8 +54,5 @@ function fetchPostWorks(event, works){
         
         alert("Ajout de l'image réussi");
     })
-    .catch(error => {
-        console.error("Une erreur s'est produite lors de l'ajout :", error);
-        // Gérer l'erreur
-    });
+    .catch(error => catchError(error, "Une erreur s'est produite lors de l'ajout"));
 }
