@@ -1,3 +1,5 @@
+import { fetchResponseError, catchError } from "./error.js";
+
 //fonction pour supprimer les travaux
 export function deleteWorks(works) {
     const logoDelete = document.querySelectorAll(".fa-trash-can");
@@ -19,12 +21,7 @@ function fecthDelete(event, works){
             "accept": "*/*"
         }
     })
-    .then(response => {
-        if(!response.ok){
-            throw new Error("Erreur");
-        }
-        return response;
-    })
+    .then(response => (fetchResponseError(response, "Suppression impossible"), response))
     .then(data => {
         //trouver l'index de l'élément cliqué
         const index = works.findIndex((indexElement) => indexElement.id === parseInt(id));
@@ -38,8 +35,5 @@ function fecthDelete(event, works){
     
         alert("La suppression a été réalisée avec succès");  
     })
-    .catch(error => {
-        console.error("Erreur lors de la suppression :", error);
-        alert("Une erreur s'est produite lors de la suppression.");
-    });
+    .catch(error => catchError(error, "Une erreur s'est produite lors de la suppression."));
 }
