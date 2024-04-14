@@ -18,10 +18,9 @@ async function fetchDataAndGenerateWorks() {
         const categories = await getCategories();
 
         // Appel de la fonction generateWorks avec les données récupérées
-        generateWorks(works); 
-        
-        addButtonEventListeners(works, categories);
-
+        generateWorks(works);
+        allWorks(works);
+        buttonFilter(works, categories);
         edition(works);
         
     } catch (error) {
@@ -64,7 +63,7 @@ function btnBackground(){
     }
 }
 
-function addButtonEventListeners(works, categories) {
+function allWorks(works){
     const btnAll = document.querySelector(".btn-all");
 
     //bouton pour afficher tous les projets
@@ -74,7 +73,9 @@ function addButtonEventListeners(works, categories) {
         document.querySelector(".gallery").innerHTML = "";
         generateWorks(works);
     });
+}
 
+function buttonFilter(works, categories) {
     //récupération des catégories et création de boutton à l'aide d'une boucle
     for(let i = 0; i < categories.length; i++){
         const filter = document.querySelector(".filter");
@@ -84,17 +85,19 @@ function addButtonEventListeners(works, categories) {
         filter.appendChild(button); 
         
         //filtre des projets en fonction de la catégorie cliquée
-        button.addEventListener("click", function () {
-            //réinitialisation de l'apparence des boutons de filtre
-            btnBackground();
-            //ajout de la class active pour changer l'apparence du bouton cliqué
-            button.classList = "active"
-            const worksFiltrees = works.filter(function (works) {
-                //vérifier si la catégorie de l'oeuvre correspond à l'id de la catégorie du bouton
-                return works.category.id === categories[i].id;
-            });
-            document.querySelector(".gallery").innerHTML = "";
-            generateWorks(worksFiltrees);
-        });
+        button.addEventListener("click", () => filterWorks(works, categories, i, button));
     }
+}
+
+function filterWorks(works, categories, index, button){
+    //réinitialisation de l'apparence des boutons de filtre
+    btnBackground();
+    //ajout de la class active pour changer l'apparence du bouton cliqué
+    button.classList = "active"
+    const worksFiltered = works.filter(function (works) {
+        //vérifier si la catégorie de l'oeuvre correspond à l'id de la catégorie du bouton
+        return works.category.id === categories[index].id;
+    });
+    document.querySelector(".gallery").innerHTML = "";
+    generateWorks(worksFiltered);
 }
