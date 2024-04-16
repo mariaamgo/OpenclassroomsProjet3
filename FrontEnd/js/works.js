@@ -1,4 +1,3 @@
-//import { login } from "./login.js";
 import { edition } from "./edition.js";
 import { getCategories } from "./categories.js";
 
