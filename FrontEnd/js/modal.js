@@ -90,7 +90,7 @@ function styleModalAddPhoto(works, btnModal){
     // Ajouter le contenu à la modal pour ajouter une photo
     btnModal.style = "background-color : #A7A7A7";
     //ajout du contenu de la fenêtre modale
-    containerModalAddPhoto()
+    containerModalAddPhoto();
     //appel de la fonction fillOptions pour avoir les options du select
     fillOptions();
     //appel de la fonction previewFile() pour avoir l'aperçu de la photo choisie
