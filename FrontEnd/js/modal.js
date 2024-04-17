@@ -191,10 +191,10 @@ function changeBgColor(){
 //fonction pour vider le formulaire 
 export function emptyForm(){
     const imgFile = document.querySelector(".img-file");
-    if(imgFile.src){
+    if(imgFile && imgFile.src){
         imgFile.src = "";
+        imgFile.style.display = "none";
+        document.querySelector(".file div").style.display= "flex";
+        document.querySelector(".modal-content form").reset();
     }
-    imgFile.style.display = "none";
-    document.querySelector(".file div").style.display= "flex";
-    document.querySelector(".modal-content form").reset();
 }
