@@ -5,10 +5,10 @@ import { fetchResponseError, catchError } from "./error.js";
 //fonction pour ajouter de nouveaux travaux à la galerie
 export function addWork(works){
     const formModal = document.querySelector(".modal-content form");
-    formModal.addEventListener("submit", (event) => fetchPostWorks(event, works));
+    formModal.addEventListener("submit", (event) => postWorks(event, works));
 }
 
-function fetchPostWorks(event, works){
+function postWorks(event, works){
     //empêcher le rechargement de la page
     event.preventDefault();
     //récupération du token
@@ -19,7 +19,7 @@ function fetchPostWorks(event, works){
     const category = event.target.querySelector("[name=category]").value;
     //alert si les champs ne sont pas remplis
     if (!file.files[0] || !title || !category) {
-        alert("Tous les champs ne sont pas remplis");
+        alert("Veuillez remplir tous les champs");
         return;
     }
 
@@ -30,6 +30,10 @@ function fetchPostWorks(event, works){
     formData.append("title", title);
     formData.append("category", category);
 
+    fetchPostWorks(formData, works, token);
+}
+
+function fetchPostWorks(formData, works, token){
     //stockage des valeurs dans l'api swagger
     fetch("http://localhost:5678/api/works", {
         method: "POST",
