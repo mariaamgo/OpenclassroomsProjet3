@@ -1,7 +1,7 @@
 import { edition } from "./edition.js";
 import { getCategories } from "./categories.js";
 
-async function fetchDataAndGenerateWorks() {
+async function fetchAndGenerateWorks() {
     try {
 
         const response = await fetch("http://localhost:5678/api/works");
@@ -18,7 +18,7 @@ async function fetchDataAndGenerateWorks() {
 
         // Appel de la fonction generateWorks avec les données récupérées
         generateWorks(works);
-        allWorks(works);
+        buttonAllWorks(works);
         buttonFilter(works, categories);
         edition(works);
         
@@ -28,7 +28,7 @@ async function fetchDataAndGenerateWorks() {
 }
 
 // Appel de la fonction fetchDataAndGenerateWorks
-fetchDataAndGenerateWorks();
+fetchAndGenerateWorks();
 
 //fonction pour afficher tous les projets
 function generateWorks(works) {
@@ -62,16 +62,18 @@ function btnBackground(){
     }
 }
 
-function allWorks(works){
+function buttonAllWorks(works){
     const btnAll = document.querySelector(".btn-all");
 
     //bouton pour afficher tous les projets
-    btnAll.addEventListener("click", function () {
-        btnBackground();
-        btnAll.classList = "active"
-        document.querySelector(".gallery").innerHTML = "";
-        generateWorks(works);
-    });
+    btnAll.addEventListener("click", () => allWorks(works, btnAll));
+}
+
+function allWorks(works, btnAll){
+    btnBackground();
+    btnAll.classList = "active"
+    document.querySelector(".gallery").innerHTML = "";
+    generateWorks(works);
 }
 
 function buttonFilter(works, categories) {
