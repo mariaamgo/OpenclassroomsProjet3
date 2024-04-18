@@ -21,7 +21,7 @@ function fecthDelete(event, works){
             "accept": "*/*"
         }
     })
-    .then(response => (fetchResponseError(response, "Suppression impossible"), response))
+    .then(response => (fetchResponseError(response, "Une erreur s'est produite lors de la suppression."), response))
     .then(data => {
         //trouver l'index de l'élément cliqué
         const index = works.findIndex((indexElement) => indexElement.id === parseInt(id));
@@ -35,5 +35,5 @@ function fecthDelete(event, works){
     
         alert("La suppression a été réalisée avec succès");  
     })
-    .catch(error => catchError(error, "Une erreur s'est produite lors de la suppression."));
+    .catch(error => catchError(error));
 }
