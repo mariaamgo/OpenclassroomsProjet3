@@ -43,7 +43,7 @@ function fetchPostWorks(formData, works, token){
         },
         body: formData
     })
-    .then(response => (fetchResponseError(response, "Ajout impossible"), response.json()))
+    .then(response => (fetchResponseError(response, "Une erreur s'est produite lors de l'ajout"), response.json()))
     .then(data => {
         //ajout des données de data à la fin du tableau works
         works.push(data);
@@ -58,5 +58,5 @@ function fetchPostWorks(formData, works, token){
         
         alert("Ajout de l'image réussi");
     })
-    .catch(error => catchError(error, "Une erreur s'est produite lors de l'ajout"));
+    .catch(error => catchError(error));
 }
