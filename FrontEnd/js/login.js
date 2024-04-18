@@ -1,3 +1,5 @@
+import { catchError } from "./error.js";
+
 function login(){
     const formLogin = document.querySelector("form");
     formLogin.addEventListener("submit", (event) => fetchLogin(event));
@@ -16,19 +18,19 @@ function fetchLogin(event){
             body: JSON.stringify(log)
         })
         .then(response => {
+            if(response.status === 404 || response.status === 401){
+                throw new Error("Erreur dans l’identifiant ou le mot de passe.");
+            }
             return response.json();
         })
         .then(data => {
-            if(data.token === undefined){
-                alert("Erreur dans l’identifiant ou le mot de passe");
-            }else{
-                //récupération du token et stockage du token
-                const token = data.token;
-                sessionStorage.setItem("response", token);
-                //console.log(localStorage.getItem("response"));
-                window.location.href="../index.html";
-            }
+            //récupération du token et stockage du token
+            const token = data.token;
+            sessionStorage.setItem("response", token);
+            //console.log(localStorage.getItem("response"));
+            window.location.href="../index.html";
         })
+        .catch(error => catchError(error));
 }
 login();
 
