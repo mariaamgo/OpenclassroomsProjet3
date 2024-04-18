@@ -59,23 +59,27 @@ function modalGallery(works){
     const arrowLeft = document.querySelector(".fa-arrow-left");
     arrowLeft.style.display = "none";
     for (let i = 0; i < works.length; i++) {
-        const modalContent = document.querySelector(".gallery-modal");
-        const worksElement = document.createElement("figure");
-
-        const imageElement = document.createElement("img");
-        const trashIcon = document.createElement("i");
-
-        trashIcon.classList = "fa-solid fa-trash-can";
-        trashIcon.id = works[i].id;
-        imageElement.src = works[i].imageUrl;
-        modalContent.appendChild(worksElement);
-        worksElement.appendChild(imageElement);
-        worksElement.appendChild(trashIcon);
+        addFigureGallery(works, i);
     }
     //appel de la fonction modalAddPhoto pour ouvrir "Ajout photo"
     modalAddPhoto(works);
     //appel de la fonction deleteWorks pour supprimer les projets cliquée
     deleteWorks(works);
+}
+
+function addFigureGallery(works, index){
+    const modalContent = document.querySelector(".gallery-modal");
+    const worksElement = document.createElement("figure");
+
+    const imageElement = document.createElement("img");
+    const trashIcon = document.createElement("i");
+
+    trashIcon.classList = "fa-solid fa-trash-can";
+    trashIcon.id = works[index].id;
+    imageElement.src = works[index].imageUrl;
+    modalContent.appendChild(worksElement);
+    worksElement.appendChild(imageElement);
+    worksElement.appendChild(trashIcon);
 }
 
 //fonction pour créer le contenue de la fenêtre modale formulaire
@@ -129,15 +133,18 @@ function containerModalAddPhoto(){
 async function fillOptions(){
     //appel des catégories de la fonction getCategories()
     const categories = await getCategories();
-    console.log(categories)
     //boucle sur les catégories
     for(let i = 0; i < categories.length; i++){
-        const select = document.querySelector("#category");
-        const option = document.createElement("option");
-        option.innerText = categories[i].name;
-        option.value = categories[i].id;
-        select.appendChild(option);
+        addOptions(categories, i);
     }
+}
+
+function addOptions(categories, index){
+    const select = document.querySelector("#category");
+    const option = document.createElement("option");
+    option.innerText = categories[index].name;
+    option.value = categories[index].id;
+    select.appendChild(option);
 }
 
 //affichage de l'image sélectionnée dans file
