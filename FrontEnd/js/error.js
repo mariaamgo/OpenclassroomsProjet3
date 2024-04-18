@@ -4,7 +4,7 @@ export function fetchResponseError(response, errorMessage) {
     }
 }
  
-export function catchError(error, errorMessage) {
-    console.error("Erreur : " + errorMessage, error);
-    alert("Erreur : " + errorMessage);
+export function catchError(error) {
+    console.error(error);
+    alert(error.message);
 }
