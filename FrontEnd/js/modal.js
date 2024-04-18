@@ -201,6 +201,7 @@ export function emptyForm(){
     if(imgFile && imgFile.src){
         imgFile.src = "";
         imgFile.style.display = "none";
+        document.querySelector("input.button-modal").style = "background-color : #A7A7A7; cursor : default";
         document.querySelector(".file div").style.display= "flex";
         document.querySelector(".modal-content form").reset();
     }
