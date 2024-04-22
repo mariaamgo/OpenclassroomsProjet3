@@ -18,7 +18,7 @@ async function fetchAndGenerateWorks() {
 
         // Appel de la fonction generateWorks avec les données récupérées
         generateWorks(works);
-        buttonAllWorks(works);
+        getContainerFilter(works);
         buttonFilter(works, categories);
         edition(works);
         
@@ -62,8 +62,19 @@ function btnBackground(){
     }
 }
 
-function buttonAllWorks(works){
-    const btnAll = document.querySelector(".btn-all");
+function getContainerFilter(works){
+    const gallery = document.querySelector(".gallery");
+    //création d'une div filter 
+    const filter = document.createElement("div");
+    filter.classList.add("filter");
+
+    const btnAll = document.createElement("button");
+    btnAll.textContent = "Tous";
+    btnAll.classList.add("active");
+
+    //ajout du bouton all à la div filter
+    filter.appendChild(btnAll);
+    gallery.insertAdjacentElement('beforebegin', filter);
 
     //bouton pour afficher tous les projets
     btnAll.addEventListener("click", () => allWorks(works, btnAll));
@@ -71,7 +82,7 @@ function buttonAllWorks(works){
 
 function allWorks(works, btnAll){
     btnBackground();
-    btnAll.classList = "active"
+    btnAll.classList = "active";
     document.querySelector(".gallery").innerHTML = "";
     generateWorks(works);
 }
