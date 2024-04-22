@@ -405,6 +405,35 @@ button.button-modal{
 	background-color: #A7A7A7;
 }
 
+/* edition page*/
+.card-edition{
+	width: 100%;
+	height: 60px;
+}
+.card-edition .edition{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 60px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #000;
+	color: #FFF;
+}
+#portfolio .edition{
+	position: absolute;
+	top: 0.6rem;
+	right: 31%;
+	display: flex;
+	justify-content: flex-start;
+	align-items: baseline;
+}
+.edition i{
+	margin-right: 10px;
+}
+
 /* Login page*/
 
 #login {
@@ -437,33 +466,4 @@ button.button-modal{
 	display: block;
 	width: 100%;
 	text-decoration: underline;
-}
-
-/* edition page*/
-.card-edition{
-	width: 100%;
-	height: 60px;
-}
-.card-edition .edition{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 60px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: #000;
-	color: #FFF;
-}
-#portfolio .edition{
-	position: absolute;
-	top: 0.6rem;
-	right: 31%;
-	display: flex;
-	justify-content: flex-start;
-	align-items: baseline;
-}
-.edition i{
-	margin-right: 10px;
 }
