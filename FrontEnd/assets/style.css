@@ -143,11 +143,8 @@ header li:hover {
 	width: 80%;
 }
 
-.portfolio-title{
+#portfolio {
 	position: relative;
-	display: flex;
-	justify-content: center;
-	align-items: center;
 }
 #portfolio h2 {
 	text-align: center;
@@ -446,7 +443,6 @@ button.button-modal{
 .card-edition{
 	width: 100%;
 	height: 60px;
-	display: none;
 }
 .card-edition .edition{
 	position: absolute;
@@ -454,19 +450,20 @@ button.button-modal{
 	left: 0;
 	width: 100%;
 	height: 60px;
-	display: none;
+	display: flex;
 	justify-content: center;
 	align-items: center;
 	background-color: #000;
 	color: #FFF;
 }
-.edition i{
-	margin-right: 10px;
-}
-.portfolio-title .edition{
+#portfolio .edition{
 	position: absolute;
+	top: 0.6rem;
 	right: 31%;
-	display: none;
+	display: flex;
 	justify-content: flex-start;
 	align-items: baseline;
+}
+.edition i{
+	margin-right: 10px;
 }
