@@ -406,11 +406,11 @@ button.button-modal{
 }
 
 /* edition page*/
-.card-edition{
+.banner-edition{
 	width: 100%;
 	height: 60px;
 }
-.card-edition .edition{
+.banner-edition .edition{
 	position: absolute;
 	top: 0;
 	left: 0;
