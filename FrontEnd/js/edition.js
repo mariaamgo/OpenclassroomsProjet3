@@ -15,26 +15,32 @@ export function edition(works){
 //fonction pour changer l'apparence de index.html en mode edition
 function modeEdition(){
     const header = document.querySelector("header");
-    const cardEdition = `<div class="card-edition">
+    //création de la banière mode édition
+    const bannerEdition = `<div class="banner-edition">
                             <div class = "edition">
                                 <i class="fa-regular fa-pen-to-square"></i>
                                 <p>Mode édition</p>
                             </div>
                         </div>`;
-    header.insertAdjacentHTML('beforebegin', cardEdition);
+    //ajout de bannerEdition avant le header
+    header.insertAdjacentHTML('beforebegin', bannerEdition);
 
     const title_portfolio = document.querySelector("#portfolio h2");
+    //création du "bouton" pour modifier
     const edition = `<div class= "edition">
                         <i class="fa-regular fa-pen-to-square"></i>
                         <a href="#modal" class="js-modal">modifier</a>
                     </div>`;
+    //ajout de edition après le titre h2 "Mes projets"
     title_portfolio.insertAdjacentHTML('afterend', edition);
     title_portfolio.style = "margin-bottom: 100px";
 
     const liLogin = document.querySelector("#liLogin");
+    //changement de "login" en "logout"
     liLogin.innerText = "logout";
 
     const filter = document.querySelector(".filter");
+    //"suppression" des filtres
     filter.style = "display : none";
 }
 
