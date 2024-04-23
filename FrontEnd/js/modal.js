@@ -5,6 +5,8 @@ import { deleteWorks } from "./deleteWorks.js";
 let modal = null;
 //fonction pour ouvrir la fenêtre modale
 export function openModal(works){
+    //appel de la fonction de création de la fenêtre modal
+    modalHTML();
     document.querySelector(".js-modal").addEventListener("click", function(e){
         e.preventDefault();
         const target = document.querySelector(e.target.getAttribute("href"));
@@ -49,6 +51,21 @@ function backModal(works){
     });
 }
 
+//création de la fenêtre modal
+function modalHTML(){
+    const footer = document.querySelector("footer");
+    const modalHTML = `<aside id="modal" class="modal" aria-hidden="true" role="dialog" aria-labelledby="title-modal" style="display: none;">
+                        <div class="modal-wrapper modal-stop-propagation">
+                            <div class="modal-controls">
+                                <i class="fa-solid fa-arrow-left"></i>
+                                <i class="fa-solid fa-xmark close-modal"></i>
+                            </div>
+                            <div class="container-modal"></div>
+                        </div>
+                    </aside>`;
+    //ajout de modalHTML après le footer
+    footer.insertAdjacentHTML("afterend", modalHTML);
+}
 //fonction pour créer le contenue de la fenêtre modale galerie
 function modalGallery(works){
     let containerModal = document.querySelector(".container-modal");
