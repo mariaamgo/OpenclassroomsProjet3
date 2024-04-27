@@ -10,7 +10,7 @@ async function fetchAndGenerateWorks() {
             throw new Error('Erreur lors de la récupération des données');
         }
         
-        let works = await response.json(); //transformation du JSON en tableau
+        let works = await response.json(); //récupération des données JSON de la réponse
         works = [...new Set(works)]; //transformation d'un ensemble (SET) + retransformation d'un ensemble en tableau pour le dédoublonner
 
         // Récupération des catégories à partir de la fonction getCategories
