@@ -11,7 +11,7 @@ async function fetchAndGenerateWorks() {
         }
         
         let works = await response.json(); //récupération des données JSON de la réponse
-        works = [...new Set(works)]; //transformation d'un ensemble (SET) + retransformation d'un ensemble en tableau pour le dédoublonner
+        works = [...new Set(works)]; //suppression des doublons en utilisant un objet Set, retransformation en tableau à partir des éléments uniques
 
         // Récupération des catégories à partir de la fonction getCategories
         const categories = await getCategories();
