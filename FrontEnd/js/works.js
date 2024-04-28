@@ -2,7 +2,7 @@ import { edition } from "./edition.js";
 import { getCategories } from "./categories.js";
 import { fetchResponseError, catchError } from "./error.js";
 
-async function fetchAndGenerateWorks() {
+async function getWorks() {
     try {
 
         const response = await fetch("http://localhost:5678/api/works");
@@ -15,7 +15,7 @@ async function fetchAndGenerateWorks() {
         // Récupération des catégories à partir de la fonction getCategories
         const categories = await getCategories();
 
-        // Appel de la fonction generateWorks avec les données récupérées
+        // Appel des fonctions generateWorks, getContainerFilter, buttonFilter et edition avec les données récupérées
         generateWorks(works);
         getContainerFilter(works);
         buttonFilter(works, categories);
@@ -26,8 +26,8 @@ async function fetchAndGenerateWorks() {
     }
 }
 
-// Appel de la fonction fetchDataAndGenerateWorks
-fetchAndGenerateWorks();
+// Appel de la fonction getWorks
+getWorks();
 
 //fonction pour afficher tous les projets
 function generateWorks(works) {
@@ -68,7 +68,7 @@ function getContainerFilter(works){
     filter.classList.add("filter");
 
     const btnAll = document.createElement("button");
-    btnAll.textContent = "Tous";
+    btnAll.innerText = "Tous";
     btnAll.classList.add("active");
 
     //ajout du bouton all à la div filter
@@ -81,7 +81,7 @@ function getContainerFilter(works){
 
 function allWorks(works, btnAll){
     btnBackground();
-    btnAll.classList = "active";
+    btnAll.classList.add("active");
     document.querySelector(".gallery").innerHTML = "";
     generateWorks(works);
 }
@@ -92,7 +92,7 @@ function buttonFilter(works, categories) {
         const filter = document.querySelector(".filter");
         const button = document.createElement("button");
         button.innerText = categories[i].name;
-        button.classList = `button-${categories[i].id}`;
+        button.classList.add(`button-${categories[i].id}`);
         filter.appendChild(button); 
         
         //filtre des projets en fonction de la catégorie cliquée
@@ -104,7 +104,7 @@ function filterWorks(works, categories, index, button){
     //réinitialisation de l'apparence des boutons de filtre
     btnBackground();
     //ajout de la class active pour changer l'apparence du bouton cliqué
-    button.classList = "active"
+    button.classList.add("active");
     const worksFiltered = works.filter(function (works) {
         //vérifier si la catégorie de l'oeuvre correspond à l'id de la catégorie du bouton
         return works.category.id === categories[index].id;
