@@ -2,7 +2,7 @@ import { logout } from "./logout.js";
 import { openModal } from "./modal.js";
 
 export function edition(works){
-    if(sessionStorage.getItem("response") != null){
+    if(sessionStorage.getItem("token") != null){
         //appel de la fonction modeEdition
         modeEdition();
         //appel de la fonction de deconnexion
