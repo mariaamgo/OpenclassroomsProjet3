@@ -91,7 +91,7 @@ function addFigureGallery(works, index){
     const imageElement = document.createElement("img");
     const trashIcon = document.createElement("i");
 
-    trashIcon.classList.add("fa-solid fa-trash-can");
+    trashIcon.classList = "fa-solid fa-trash-can";
     trashIcon.id = works[index].id;
 
     imageElement.src = works[index].imageUrl;
