@@ -1,14 +1,13 @@
 import { edition } from "./edition.js";
 import { getCategories } from "./categories.js";
+import { fetchResponseError, catchError } from "./error.js";
 
 async function fetchAndGenerateWorks() {
     try {
 
         const response = await fetch("http://localhost:5678/api/works");
         
-        if (!response.ok) {
-            throw new Error('Erreur lors de la récupération des données');
-        }
+        fetchResponseError(response, "Erreur lors de la récupération des données");
         
         let works = await response.json(); //récupération des données JSON de la réponse
         works = [...new Set(works)]; //suppression des doublons en utilisant un objet Set, retransformation en tableau à partir des éléments uniques
@@ -23,7 +22,7 @@ async function fetchAndGenerateWorks() {
         edition(works);
         
     } catch (error) {
-        console.error('Erreur :', error.message);
+        catchError(error);
     }
 }
 
