@@ -12,7 +12,7 @@ function fecthDelete(event, works){
     const id = event.target.id;
     //appel de la balise figure dans la galerie principale
     const figure = document.getElementById(`figure${id}`);
-    const token = sessionStorage.getItem("response");
+    const token = sessionStorage.getItem("token");
     
     fetch(`http://localhost:5678/api/works/${id}`, {
         method: "DELETE",
