@@ -26,7 +26,7 @@ function fetchLogin(event){
         .then(data => {
             //récupération du token et stockage du token
             const token = data.token;
-            sessionStorage.setItem("response", token);
+            sessionStorage.setItem("token", token);
             //console.log(localStorage.getItem("response"));
             window.location.href="../index.html";
         })
