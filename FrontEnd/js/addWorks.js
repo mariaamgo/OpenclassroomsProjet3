@@ -12,7 +12,7 @@ function postWorks(event, works){
     //empêcher le rechargement de la page
     event.preventDefault();
     //récupération du token
-    const token = sessionStorage.getItem("response");
+    const token = sessionStorage.getItem("token");
     //récupération de la valeur des input
     const file = event.target.querySelector("[name=file]");
     const title = event.target.querySelector("[name=title]").value;
