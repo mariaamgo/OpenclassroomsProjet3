@@ -64,6 +64,7 @@ function btnBackground(){
     }
 }
 
+//fonction pour créer une partie filtre contenant les boutons permettant de filtrer les travaux
 function getContainerFilter(works){
     const gallery = document.querySelector(".gallery");
     //création d'une div filter 
