@@ -30,7 +30,7 @@ function fetchLogin(event){
             //console.log(localStorage.getItem("response"));
             window.location.href="../index.html";
         })
-        .catch(error => catchError(error));
+        .catch(error => catchError(error));//catchError : fonction qui vient de la page error.js
 }
 login();
 
