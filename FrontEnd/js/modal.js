@@ -2,17 +2,22 @@ import { getCategories } from "./categories.js";
 import { addWork } from "./addWorks.js";
 import { deleteWorks } from "./deleteWorks.js";
 
+//déclaration de la modal à null
 let modal = null;
 //fonction pour ouvrir la fenêtre modale
 export function openModal(works){
     //appel de la fonction de création de la fenêtre modal
     modalHTML();
+    //ajout d'un écouteur d'événement sur lien qui doit ouvrir la fenêtre modale
     document.querySelector(".js-modal").addEventListener("click", function(e){
         e.preventDefault();
         const target = document.querySelector(e.target.getAttribute("href"));
+        //affichage de la fenêtre modale
         target.style.display = null;
+        //mise à jour des attributs aria
         target.removeAttribute('aria-hidden');
         target.setAttribute("aria-modal", "true");
+        //assignation de target à la constante modal
         modal = target;
 
         //appel de la fonction modalGallery pour afficher le contenue de la fenêtre modale
@@ -28,19 +33,28 @@ export function openModal(works){
     })
 }
 
-function closeModal(){   
+//fonction pour fermer la fenêtre modale
+function closeModal(){ 
+    //vérification si la fenêtre modale existe, sinon interruption de l'exécution de la fonction
     if(modal === null) return;
+    //masquage de la fenêtre modale
     modal.style.display = "none";
+    //mise à jour des attributs aria
     modal.setAttribute("aria-hidden", "true");
     modal.removeAttribute("aria-modal");
+
+    //suppression des écouteurs d'événements
     modal.removeEventListener("click", closeModal);
     modal.querySelector(".close-modal").removeEventListener("click", closeModal);
     modal.querySelector(".modal-stop-propagation").removeEventListener("click", stopPropagation);
+
+    //réinitialisation de la variable modal à null
     modal = null;
     //vider le formulaire 
     emptyForm();
 }
 
+//fonction pour arrêter la propagation des événements
 function stopPropagation(e){
     e.stopPropagation();
 }
@@ -75,6 +89,8 @@ function modalGallery(works){
     <button class="button-modal">Ajouter une photo</button>`;
     const arrowLeft = document.querySelector(".fa-arrow-left");
     arrowLeft.style.display = "none";
+
+    //affichage de tous les projets
     for (let i = 0; i < works.length; i++) {
         addFigureGallery(works, i);
     }
@@ -84,16 +100,18 @@ function modalGallery(works){
     deleteWorks(works);
 }
 
+//fonction pour créer les balises figures 
 function addFigureGallery(works, index){
     const modalContent = document.querySelector(".gallery-modal");
     const worksElement = document.createElement("figure");
-
     const imageElement = document.createElement("img");
     const trashIcon = document.createElement("i");
 
+    //attribution des classes à l'icône de corbeille
     trashIcon.classList = "fa-solid fa-trash-can";
+    //attribution de l'identifiant du travail à l'icône de corbeille
     trashIcon.id = works[index].id;
-
+    //attribution de l'URL de l'image du travail à l'élément image
     imageElement.src = works[index].imageUrl;
     modalContent.appendChild(worksElement);
     worksElement.appendChild(imageElement);
@@ -138,9 +156,9 @@ function containerModalAddPhoto(){
                         <p>jpg, png : 4mo max</p>
                     </div>
                 </div>
-                <label>Titre</label>
+                <label for="title">Titre</label>
                 <input type='text' name='title' id='title'>
-                <label>Catégorie</label>
+                <label for="category">Catégorie</label>
                 <select name='category' id='category'><option></option></select>
                 <input type="submit" class="button-modal" value="Valider">
             </form>
@@ -160,7 +178,9 @@ async function fillOptions(){
 function addOptions(categories, index){
     const select = document.querySelector("#category");
     const option = document.createElement("option");
+    //ajout du texte à l'élément option avec le nom de la catégorie
     option.innerText = categories[index].name;
+    //attribution de l'id de la catégorie à la valeur de l'élément option
     option.value = categories[index].id;
     select.appendChild(option);
 }
@@ -178,11 +198,13 @@ function previewFile() {
         return;
     }
 
+    //création d'un objet FileReader pour lire le contenu du fichier
     const reader = new FileReader();
+    //ajout d'un écouteur d'événement pour déclencher lorsque le chargement du fichier est terminé
     reader.addEventListener(
         "load",
         () => {
-        // on convertit l'image en une chaîne de caractères
+        //mise à jour de la source de l'image avec les données du fichier
         imgFile.src = reader.result;
         },
         false,
@@ -191,6 +213,7 @@ function previewFile() {
     if (file) {
         imgFile.style.display= "inline";
         divFile.style.display= "none";
+        //lecture du contenu du fichier en tant qu'URL de données
         reader.readAsDataURL(file);
     }
 }
