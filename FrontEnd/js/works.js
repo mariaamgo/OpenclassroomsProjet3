@@ -40,12 +40,15 @@ export function addFigure(works, index){
     const gallery = document.querySelector(".gallery");
 
     const worksElement = document.createElement("figure");
+    //attribution d'un id à l'élément figure
     worksElement.id = `figure${works[index].id}`;
 
     const imageElement = document.createElement("img");
+    //attribution de l'URL de l'image du travail à l'élément image
     imageElement.src = works[index].imageUrl;
 
     const titleElement = document.createElement("figcaption");
+    //attribution du titre du travail à l'élément figcaption
     titleElement.innerText = works[index].title;
 
     gallery.appendChild(worksElement);
@@ -91,6 +94,7 @@ function buttonFilter(works, categories) {
     for(let i = 0; i < categories.length; i++){
         const filter = document.querySelector(".filter");
         const button = document.createElement("button");
+        //ajout du texte du bouton avec le nom de la catégorie
         button.innerText = categories[i].name;
         button.classList.add(`button-${categories[i].id}`);
         filter.appendChild(button); 
