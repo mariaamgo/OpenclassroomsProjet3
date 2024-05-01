@@ -6,7 +6,7 @@ async function getWorks() {
     try {
 
         const response = await fetch("http://localhost:5678/api/works");
-        
+        //fonction qui vient de la page error.js pour créer une nouvelle erreur
         fetchResponseError(response, "Erreur lors de la récupération des données");
         
         let works = await response.json(); //récupération des données JSON de la réponse
@@ -22,7 +22,7 @@ async function getWorks() {
         edition(works);
         
     } catch (error) {
-        catchError(error);
+        catchError(error);//fonction qui vient de la page error.js pour afficher l'erreur en console et en alert
     }
 }
 
