@@ -86,7 +86,9 @@ function getContainerFilter(works){
 function allWorks(works, btnAll){
     btnBackground();
     btnAll.classList.add("active");
+    //vider le contenue HTML de la gallery
     document.querySelector(".gallery").innerHTML = "";
+    //appel de la fonction generate works pour afficher tous les travaux
     generateWorks(works);
 }
 
