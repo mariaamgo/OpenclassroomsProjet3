@@ -90,6 +90,7 @@ function allWorks(works, btnAll){
     generateWorks(works);
 }
 
+//fonction pour créer et ajouter les boutons à la partie filtre 
 function buttonFilter(works, categories) {
     //récupération des catégories et création de boutton à l'aide d'une boucle
     for(let i = 0; i < categories.length; i++){
