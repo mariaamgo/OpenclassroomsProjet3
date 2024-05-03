@@ -36,6 +36,7 @@ function generateWorks(works) {
     }
 }
 
+//fonction pour créer les images de la galerie
 export function addFigure(works, index){
     const gallery = document.querySelector(".gallery");
 
