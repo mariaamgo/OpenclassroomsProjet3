@@ -49,7 +49,7 @@ function fetchPostWorks(formData, works, token){
         //ajout des données de data à la fin du tableau works
         works.push(data);
         //récupération du dernier index
-        let indexLastElement = works.length - 1;
+        const indexLastElement = works.length - 1;
         
         //appel de la fonction add figure pour ajouter la nouvelle image dans la galerie
         addFigure(works, indexLastElement);
